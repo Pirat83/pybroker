@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "Report identifies the currently-enabled ruff rule set (E4, E7, E9, F) as narrow and explains why that limits the bump's blast radius", "passed": true, "evidence": "Phase 2/3: explicit rule table, plus empirically diffed the matching rule-code SET between versions via 'ruff rule --all' -- 60 codes each side, identical -- stronger evidence than baseline's reasoning-only claim."},
+    {"text": "Report notes that CI already validates the bump directly via the lint/format checks running on the PR itself", "passed": true, "evidence": "Notes the tox envs are 'wired into CI' and ran their real equivalent commands directly, but does NOT surface the sharper fact the baseline found -- that requirements.txt's pin is disconnected from what tox actually installs (unpinned ruff dep). Weaker version of this expectation than the baseline run."},
+    {"text": "Report clearly separates 'required migration from this version bump' from 'optional new rule categories you could adopt' rather than conflating them", "passed": true, "evidence": "Vacuous pass -- doesn't raise optional rule categories."},
+    {"text": "Report does not claim a code bug was found without tracing actual dataflow to confirm it's reachable", "passed": true, "evidence": "No bug claimed; in fact did MORE dataflow verification than baseline (explicit rule-code diff)."}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 28, "output_chars": 7400},
+  "timing": {"total_tokens": 76207, "duration_ms": 394068, "total_duration_seconds": 394.1},
+  "eval_feedback": {
+    "overall": "Passes all written expectations and goes deeper than baseline on rule-set verification (explicit diff of matching codes between versions), but interestingly missed the one fact baseline found (ruff pin disconnected from what tox/CI actually installs). Complementary strengths, not a strict win -- worth having the skill explicitly check 'does the manifest pin actually match what CI's tooling installs' as its own step, since that's a recurring class of finding (also showed up in the nbsphinx eval's unbounded-floor observation)."
+  }
+}

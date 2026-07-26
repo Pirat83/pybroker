@@ -1,0 +1,16 @@
+{
+  "expectations": [
+    {"text": "Report states nbsphinx has no version-sensitive configuration options set in docs/source/conf.py", "passed": true, "evidence": "Phase 2: 'nbsphinx is added to extensions with no other nbsphinx_* config variables set at all' -- explicitly enumerated the options that were NOT set."},
+    {"text": "Report notes that no CI workflow builds the docs or executes notebooks, so this bump has zero automated coverage", "passed": true, "evidence": "Phase 0 leads with this as 'the load-bearing finding', Phase 4 repeats it as carrying 'zero evidential weight'."},
+    {"text": "Report does NOT introduce or propose a new regression test for a non-issue -- it concludes no code fix is needed", "passed": true, "evidence": "Phase 5 explicitly: 'Not applicable... nothing here to write one against.'"},
+    {"text": "Report gives an explicit, unhedged safe-to-merge verdict rather than vague uncertainty", "passed": true, "evidence": "Summary: 'Verdict: safe to merge.'"},
+    {"text": "Report is proportionate to the low signal (concise), not padded with generic dependency-bump boilerplate", "passed": true, "evidence": "Follows the phase structure tightly, each phase adds real content (changelog table, usage grep results, empirical build)."},
+    {"text": "CRITICAL (added post-hoc, not in the original assertion set): verifies the OLD version's behavior against the current environment, not just the new version", "passed": false, "evidence": "Phase 4 only builds docs with nbsphinx==0.9.8 (the new/target version) and confirms it works. It never tests nbsphinx==0.8.11 against current Sphinx, so it never discovered the real crash (sphinx.util.status_iterator removed) that the baseline run found by testing both versions. This is the single most important gap found in this calibration round."}
+  ],
+  "summary": {"passed": 5, "failed": 1, "total": 6, "pass_rate": 0.83},
+  "execution_metrics": {"total_tool_calls": 28, "output_chars": 9600},
+  "timing": {"total_tokens": 77144, "duration_ms": 484347, "total_duration_seconds": 484.3},
+  "eval_feedback": {
+    "overall": "The written assertions all pass, but they missed the actual differentiator: this run reached the WRONG top-line conclusion in a subtler way than a normal miss -- it correctly followed every phase, correctly verified 'the new version builds clean', and still landed on 'nothing to fix' because Phase 3/4 as written only ask 'does the new version work', not 'did the old version already NOT work'. The skill needs an explicit instruction to test old-vs-new comparatively whenever Phase 4's coverage check reveals zero existing test/CI coverage (i.e. exactly when empirical verification is the only signal available, that verification should be bidirectional)."
+  }
+}

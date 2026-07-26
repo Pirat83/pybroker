@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "ruff-self-verifying",
+  "prompt": "Can you check PR #17 on Pirat83/pybroker (ruff bump from >=0.3.4 to >=0.16.0)? I want to know if there's anything in our code that actually needs to change because of this, not just whether CI is green. This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+  "assertions": [
+    "Report identifies the currently-enabled ruff rule set (E4, E7, E9, F) as narrow and explains why that limits the bump's blast radius",
+    "Report notes that CI already validates the bump directly via the lint/format checks running on the PR itself",
+    "Report clearly separates 'required migration from this version bump' from 'optional new rule categories you could adopt' rather than conflating them",
+    "Report does not claim a code bug was found without tracing actual dataflow to confirm it's reachable"
+  ]
+}

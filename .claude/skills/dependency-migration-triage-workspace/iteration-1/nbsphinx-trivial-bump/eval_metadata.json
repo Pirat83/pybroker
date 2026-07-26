@@ -1,0 +1,12 @@
+{
+  "eval_id": 0,
+  "eval_name": "nbsphinx-trivial-bump",
+  "prompt": "There's an open Dependabot PR on Pirat83/pybroker bumping nbsphinx from >=0.8.11 to >=0.9.8 (PR #19). Can you triage it properly before I merge -- I don't want to just trust that CI passing means it's fine. This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+  "assertions": [
+    "Report states nbsphinx has no version-sensitive configuration options set in docs/source/conf.py",
+    "Report notes that no CI workflow builds the docs or executes notebooks, so this bump has zero automated coverage",
+    "Report does NOT introduce or propose a new regression test for a non-issue -- it concludes no code fix is needed",
+    "Report gives an explicit, unhedged safe-to-merge verdict rather than vague uncertainty",
+    "Report is proportionate to the low signal (concise), not padded with generic dependency-bump boilerplate"
+  ]
+}

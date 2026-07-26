@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "skill_name": "dependency-migration-triage",
+    "skill_path": "/home/pirat/Projects/pybroker/.claude/skills/dependency-migration-triage",
+    "evals_run": ["nbsphinx-trivial-bump", "pypi-publish-live-risk", "ruff-self-verifying"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "nbsphinx-trivial-bump",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.83, "passed": 5, "failed": 1, "total": 6, "time_seconds": 484.3, "tokens": 77144, "tool_calls": 28, "errors": 0},
+      "expectations": [
+        {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": true, "evidence": "Phase 2 explicitly enumerates unset options"},
+        {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Phase 0 leads with this"},
+        {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "Phase 5: not applicable"},
+        {"text": "Explicit unhedged safe-to-merge verdict", "passed": true, "evidence": "'Verdict: safe to merge'"},
+        {"text": "Proportionate depth, not padded", "passed": true, "evidence": "Depth matches phase structure"},
+        {"text": "CRITICAL: verifies OLD version behavior, not just new", "passed": false, "evidence": "Only builds docs with 0.9.8; never tests 0.8.11 against current Sphinx, misses the real crash the baseline found"}
+      ],
+      "notes": ["Missed the real finding (old nbsphinx crashes against current Sphinx) because Phase 3/4 only verify the new version, not a before/after comparison."]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "nbsphinx-trivial-bump",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.8, "passed": 4, "failed": 1, "total": 5, "time_seconds": 450.5, "tokens": 70263, "tool_calls": 26, "errors": 0},
+      "expectations": [
+        {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": false, "evidence": "Never inventories conf.py's nbsphinx_* options"},
+        {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Dedicated 'the trap' section"},
+        {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "No test proposed"},
+        {"text": "Explicit unhedged safe-to-merge verdict", "passed": true, "evidence": "TL;DR: 'Safe to merge.'"},
+        {"text": "Proportionate depth, not padded", "passed": true, "evidence": "Length earned by a real finding"}
+      ],
+      "notes": ["Found the standout result of the whole calibration round: built docs with BOTH old and new nbsphinx, found the old one genuinely crashes against current Sphinx. The eval's original premise (this is a trivial no-op bump) was wrong."]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pypi-publish-live-risk",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.8, "passed": 4, "failed": 1, "total": 5, "time_seconds": 542.6, "tokens": 113773, "tool_calls": 33, "errors": 0},
+      "expectations": [
+        {"text": "References actual user/password with: block", "passed": true, "evidence": "Phase 0 quotes exact yaml"},
+        {"text": "Addresses whether token auth still works unchanged", "passed": true, "evidence": "Traced actual twine-upload.sh entrypoint, replayed its bash conditional with real inputs"},
+        {"text": "Notes live-only exposure, no CI dry-run today", "passed": true, "evidence": "Explicit in Phase 3 point 3"},
+        {"text": "Recommends a concrete dry-run verification step", "passed": false, "evidence": "No mention of TestPyPI or any dry-run; substitutes source-tracing for it"},
+        {"text": "Explicit about verified vs inferred", "passed": true, "evidence": "Best example of all 6 runs -- dedicated framing"}
+      ],
+      "notes": ["Found the single deepest finding across all 6 runs (password-auth now hard-fails per PyPI 2FA mandate, verified via actual script tracing) but dropped the simpler complementary dry-run recommendation the baseline included."]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "pypi-publish-live-risk",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5, "time_seconds": 290.7, "tokens": 74049, "tool_calls": 22, "errors": 0},
+      "expectations": [
+        {"text": "References actual user/password with: block", "passed": true, "evidence": "Diffed action.yml directly"},
+        {"text": "Addresses whether token auth still works unchanged", "passed": true, "evidence": "'password no longer required... no change in behavior'"},
+        {"text": "Notes live-only exposure, no CI dry-run today", "passed": true, "evidence": "'Publish package job shows skipping'"},
+        {"text": "Recommends a concrete dry-run verification step", "passed": true, "evidence": "'Exercise v1.14.1 against TestPyPI'"},
+        {"text": "Explicit about verified vs inferred", "passed": true, "evidence": "Distinguishes action.yml diff from README claims"}
+      ],
+      "notes": ["Solid, efficient baseline. Missed the deeper runtime-script finding the with-skill run caught, but never dropped the practical dry-run recommendation."]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "ruff-self-verifying",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 394.1, "tokens": 76207, "tool_calls": 28, "errors": 0},
+      "expectations": [
+        {"text": "Identifies narrow rule set (E4/E7/E9/F) limiting blast radius", "passed": true, "evidence": "Empirically diffed matching rule-code sets between versions -- 60/60 identical"},
+        {"text": "Notes CI already self-verifies the bump", "passed": true, "evidence": "Ran the exact CI commands directly; weaker than baseline on the 'pin is disconnected from CI' angle"},
+        {"text": "Separates required migration from optional adoption", "passed": true, "evidence": "Vacuous pass, topic not raised"},
+        {"text": "No overclaimed bug without dataflow trace", "passed": true, "evidence": "No bug claimed; extra rigor via rule-code diff"}
+      ],
+      "notes": ["Went deeper than baseline on rule-set verification but missed the fact that requirements.txt's pin is disconnected from what tox/CI actually installs -- a fact the baseline found."]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "ruff-self-verifying",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 244.2, "tokens": 57320, "tool_calls": 22, "errors": 0},
+      "expectations": [
+        {"text": "Identifies narrow rule set (E4/E7/E9/F) limiting blast radius", "passed": true, "evidence": "'explicit select fully replaces built-in defaults'"},
+        {"text": "Notes CI already self-verifies the bump", "passed": true, "evidence": "Found tox's ruff dep is UNPINNED -- CI already runs latest ruff regardless of this file, a sharper version of this expectation"},
+        {"text": "Separates required migration from optional adoption", "passed": true, "evidence": "Vacuous pass, topic not raised"},
+        {"text": "No overclaimed bug without dataflow trace", "passed": true, "evidence": "No bug claimed"}
+      ],
+      "notes": ["Cheapest and fastest run of all 6, and found a genuinely new fact neither the skill run nor our earlier manual investigation had surfaced this explicitly."]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.88, "stddev": 0.11, "min": 0.8, "max": 1.0},
+      "time_seconds": {"mean": 473.7, "stddev": 74.9, "min": 394.1, "max": 542.6},
+      "tokens": {"mean": 89041, "stddev": 20647, "min": 76207, "max": 113773}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.93, "stddev": 0.12, "min": 0.8, "max": 1.0},
+      "time_seconds": {"mean": 328.5, "stddev": 108.9, "min": 244.2, "max": 450.5},
+      "tokens": {"mean": 67211, "stddev": 8646, "min": 57320, "max": 74049}
+    },
+    "delta": {
+      "pass_rate": "-0.05",
+      "time_seconds": "+145.2",
+      "tokens": "+21830"
+    }
+  },
+  "notes": [
+    "Assertion pass rate is NOT the interesting signal this round -- both configurations score similarly (0.88 vs 0.93) because the written assertions didn't anticipate the actual differentiators. Read the per-eval notes, not just the aggregate delta.",
+    "nbsphinx eval: baseline (no skill) found the standout result of the whole round -- a real, reproducible crash in the old dependency version against current Sphinx -- by naturally comparing old vs new. The with-skill run, despite following every phase correctly, missed it because Phase 3/4 only verify the NEW version works, never checking whether the OLD one was already broken. This is a design gap to fix before iteration 2, not noise.",
+    "pypi-publish eval: with-skill run found the deepest single finding of the round (password-auth now hard-fails per PyPI's 2FA mandate, via actual runtime-script tracing) but dropped the simple 'recommend a TestPyPI dry run' step that baseline included -- source-level proof and an empirical dry-run recommendation should be additive, not substitutes.",
+    "ruff eval: both runs performed well and found complementary facts (with-skill: empirical rule-code diff; baseline: the manifest pin is disconnected from what CI actually installs) -- a case where running BOTH configurations, not just one, produced more coverage than either alone.",
+    "With-skill runs cost ~33% more tokens and ~44% more wall time on average, but that gap is inflated by the pypi-publish run's much deeper runtime-script tracing (113k tokens vs the ~76k average) -- not a fixed skill overhead.",
+    "No silent caps applied: all 3 evals were run at full depth per the skill's per-eval right-sizing judgment, not sampled or truncated."
+  ]
+}

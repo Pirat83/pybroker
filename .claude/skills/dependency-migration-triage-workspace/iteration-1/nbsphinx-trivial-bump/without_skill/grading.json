@@ -1,0 +1,15 @@
+{
+  "expectations": [
+    {"text": "Report states nbsphinx has no version-sensitive configuration options set in docs/source/conf.py", "passed": false, "evidence": "Report focuses on the CI-coverage gap and empirical build comparison; it never inventories conf.py's nbsphinx_* config options."},
+    {"text": "Report notes that no CI workflow builds the docs or executes notebooks, so this bump has zero automated coverage", "passed": true, "evidence": "Dedicated section 'The trap: CI passing tells you nothing about this dependency' explicitly walks through main.yml's jobs and confirms none touch Sphinx/nbsphinx."},
+    {"text": "Report does NOT introduce or propose a new regression test for a non-issue -- it concludes no code fix is needed", "passed": true, "evidence": "No test proposed anywhere; recommendation is to merge and separately consider wiring docs into CI."},
+    {"text": "Report gives an explicit, unhedged safe-to-merge verdict rather than vague uncertainty", "passed": true, "evidence": "TL;DR: 'Safe to merge.' stated directly."},
+    {"text": "Report is proportionate to the low signal (concise), not padded with generic dependency-bump boilerplate", "passed": true, "evidence": "Length is driven by a real, reproducible finding (the crash), not by boilerplate -- depth is earned, not padding."}
+  ],
+  "summary": {"passed": 4, "failed": 1, "total": 5, "pass_rate": 0.8},
+  "execution_metrics": {"total_tool_calls": 26, "output_chars": 7800},
+  "timing": {"total_tokens": 70263, "duration_ms": 450469, "total_duration_seconds": 450.5},
+  "eval_feedback": {
+    "overall": "This eval's premise was wrong: I (the eval author) assumed nbsphinx was a trivial no-op bump. This baseline agent disproved that by actually building the docs with BOTH the old and new nbsphinx versions against current Sphinx, and found the old version genuinely crashes (sphinx.util.status_iterator was removed). That is the single most valuable finding across all 6 calibration runs, and it happened in the BASELINE (no skill) run. The eval's assertions should be rewritten to test for exactly this: does the agent verify BOTH the old and new version's behavior, not just the new one."
+  }
+}

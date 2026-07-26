@@ -1,0 +1,15 @@
+{
+  "expectations": [
+    {"text": "Report references the actual user/password with: block from .github/workflows/main.yml, not a generic description of the action", "passed": true, "evidence": "Quotes the diff and states 'Pybroker only sets user/password -- untouched names, no impact.'"},
+    {"text": "Report explicitly addresses whether token-based auth still works unchanged at 1.14.1 rather than assuming trusted-publishing/OIDC migration is required", "passed": true, "evidence": "Point 3: 'password no longer required... pybroker still passes it explicitly, no change in behavior.'"},
+    {"text": "Report explicitly notes this action only executes live on an actual release tag, with no CI dry-run coverage today", "passed": true, "evidence": "'Publish package job itself shows skipping... v1.14.1 has never actually executed in this repo.'"},
+    {"text": "Report recommends a concrete verification step (e.g. a TestPyPI dry run) rather than a blanket approve or blanket block", "passed": true, "evidence": "Explicit follow-up: 'Exercise v1.14.1 against TestPyPI before/at the next real tag release.'"},
+    {"text": "Report is explicit about which claims were verified by reading actual code/config vs inferred from the action's changelog", "passed": true, "evidence": "Distinguishes 'diffed action.yml at both tags directly' from README-sourced claims, though less explicitly structured than the with-skill run's dedicated verified-vs-inferred framing."}
+  ],
+  "summary": {"passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 22, "output_chars": 5200},
+  "timing": {"total_tokens": 74049, "duration_ms": 290665, "total_duration_seconds": 290.7},
+  "eval_feedback": {
+    "overall": "Strong baseline -- diffed action.yml directly at both tags, correctly identified the CI-skip gating, recommended a TestPyPI dry run. It did NOT dig into the action's actual bash entrypoint (twine-upload.sh) to check for behavior changes with no signature change -- the with-skill run went one level deeper here and found a real finding (password-auth now hard-fails) that this baseline missed. Worth adding an explicit expectation for 'traced the actual runtime script, not just action.yml' in a future iteration."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "expectations": [
+    {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": true, "evidence": "Phase 3: 'no signature/config changes affect this repo's usage (no galleries/thumbnails/LaTeX used)'"},
+    {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Phase 0: 'none build docs (verified by grepping every workflow file)'"},
+    {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "Not applicable here since a real issue WAS found -- Phase 5 correctly treats the empirical old-vs-new build comparison itself as the regression test, not a fabricated unit test"},
+    {"text": "Explicit unhedged verdict", "passed": true, "evidence": "'Recommendation: merge PR #19... verified safe by execution'"},
+    {"text": "Proportionate depth, not padded", "passed": true, "evidence": "Depth matches the real signal found"},
+    {"text": "CRITICAL: verifies OLD version behavior, not just new", "passed": true, "evidence": "Phase 4: built docs with BOTH nbsphinx==0.8.11 (crashes, same sphinx.util.status_iterator error as iteration-1 baseline found) and nbsphinx==0.9.8 (builds clean) in matched venvs, explicitly citing case-study 4 as the reason it checked both."}
+  ],
+  "summary": {"passed": 6, "failed": 0, "total": 6, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 42, "output_chars": 9200},
+  "timing": {"total_tokens": 121217, "duration_ms": 1006979, "total_duration_seconds": 1007.0},
+  "eval_feedback": {
+    "overall": "Skill fix validated. This run caught the exact bug the iteration-1 with-skill run missed, by design (explicitly following the new Phase 4 bidirectional-verification requirement and case study 4), not by luck. Also correctly avoided overclaiming -- noted the fork's RTD badge points at upstream, not a live build of this fork, so it didn't claim 'production docs are down', only that the declared floor is factually broken and the bump fixes it. Took noticeably longer (1007s vs 484s in iteration 1) and more tokens (121k vs 77k) -- the added verification step has a real cost, but it's the cost of catching a real bug instead of missing it."
+  }
+}

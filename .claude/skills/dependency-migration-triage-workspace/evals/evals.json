@@ -1,0 +1,46 @@
+{
+  "skill_name": "dependency-migration-triage",
+  "evals": [
+    {
+      "id": 0,
+      "name": "nbsphinx-trivial-bump",
+      "prompt": "There's an open Dependabot PR on Pirat83/pybroker bumping nbsphinx from >=0.8.11 to >=0.9.8 (PR #19). Can you triage it properly before I merge -- I don't want to just trust that CI passing means it's fine. This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+      "expected_output": "Correctly identifies nbsphinx is not configured with any version-sensitive options in docs/source/conf.py, that no CI builds docs at all, and rightsizes the investigation (doesn't pad a report for a trivial docs-tooling bump). Should NOT invent a regression test for a non-issue. Should surface the doc-build coverage gap as an observation, not manufacture a fix.",
+      "files": [],
+      "expectations": [
+        "Report states nbsphinx has no version-sensitive configuration options set in docs/source/conf.py",
+        "Report notes that no CI workflow builds the docs or executes notebooks, so this bump has zero automated coverage",
+        "Report does NOT introduce or propose a new regression test for a non-issue -- it concludes no code fix is needed",
+        "Report gives an explicit, unhedged safe-to-merge verdict rather than vague uncertainty",
+        "Report is proportionate to the low signal (concise), not padded with generic dependency-bump boilerplate"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "pypi-publish-live-risk",
+      "prompt": "Pirat83/pybroker has a Dependabot PR (#9) bumping pypa/gh-action-pypi-publish from 1.5.0 to 1.14.1. This is the action that publishes real releases to PyPI. Can you check whether this bump is safe to merge, and whether our workflow needs any changes? This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+      "expected_output": "Reads the actual `with:` params in .github/workflows/main.yml (user/password token auth), checks whether that auth mechanism still works unchanged at 1.14.1 (it does -- trusted publishing is opt-in only), and flags the real nuance: this is safe per changelog research but only exercises live on an actual release tag with no CI dry-run today. Should recommend a TestPyPI dry run rather than blanket-approving or blanket-blocking.",
+      "files": [],
+      "expectations": [
+        "Report references the actual user/password with: block from .github/workflows/main.yml, not a generic description of the action",
+        "Report explicitly addresses whether token-based auth still works unchanged at 1.14.1 rather than assuming trusted-publishing/OIDC migration is required",
+        "Report explicitly notes this action only executes live on an actual release tag, with no CI dry-run coverage today",
+        "Report recommends a concrete verification step (e.g. a TestPyPI dry run) rather than a blanket approve or blanket block",
+        "Report is explicit about which claims were verified by reading actual code/config vs inferred from the action's changelog"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "ruff-self-verifying",
+      "prompt": "Can you check PR #17 on Pirat83/pybroker (ruff bump from >=0.3.4 to >=0.16.0)? I want to know if there's anything in our code that actually needs to change because of this, not just whether CI is green. This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+      "expected_output": "Recognizes ruff's version bump only affects the already-narrow enabled rule set (E4,E7,E9,F in pyproject.toml), so risk is inherently low and CI already self-verifies it. Should not overclaim findings from newly-available-but-not-enabled rule categories (B/RUF/etc) as things this PR breaks -- those are separate, optional adoption opportunities, not migration requirements from the bump itself. Should distinguish that clearly rather than lumping unrelated lint suggestions into 'migration needed'.",
+      "files": [],
+      "expectations": [
+        "Report identifies the currently-enabled ruff rule set (E4, E7, E9, F) as narrow and explains why that limits the bump's blast radius",
+        "Report notes that CI already validates the bump directly via the lint/format checks running on the PR itself",
+        "Report clearly separates 'required migration from this version bump' from 'optional new rule categories you could adopt' rather than conflating them",
+        "Report does not claim a code bug was found without tracing actual dataflow to confirm it's reachable"
+      ]
+    }
+  ]
+}

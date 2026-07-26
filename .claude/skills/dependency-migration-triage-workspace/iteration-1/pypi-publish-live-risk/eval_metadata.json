@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "pypi-publish-live-risk",
+  "prompt": "Pirat83/pybroker has a Dependabot PR (#9) bumping pypa/gh-action-pypi-publish from 1.5.0 to 1.14.1. This is the action that publishes real releases to PyPI. Can you check whether this bump is safe to merge, and whether our workflow needs any changes? This is a calibration/dry-run: analyze fully but do NOT call gh pr create or gh pr comment against any real repo -- just show me what you'd produce.",
+  "assertions": [
+    "Report references the actual user/password with: block from .github/workflows/main.yml, not a generic description of the action",
+    "Report explicitly addresses whether token-based auth still works unchanged at 1.14.1 rather than assuming trusted-publishing/OIDC migration is required",
+    "Report explicitly notes this action only executes live on an actual release tag, with no CI dry-run coverage today",
+    "Report recommends a concrete verification step (e.g. a TestPyPI dry run) rather than a blanket approve or blanket block",
+    "Report is explicit about which claims were verified by reading actual code/config vs inferred from the action's changelog"
+  ]
+}

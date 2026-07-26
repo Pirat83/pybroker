@@ -1,0 +1,16 @@
+{
+  "expectations": [
+    {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": false, "evidence": "Still doesn't inventory conf.py's nbsphinx_* options directly."},
+    {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Section 2 explicitly covers this."},
+    {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "No test proposed; though this time the premise WAS a non-issue from this run's own (incomplete) vantage point, since it didn't find the crash."},
+    {"text": "Explicit unhedged verdict", "passed": true, "evidence": "'Safe to merge.'"},
+    {"text": "Proportionate depth, not padded", "passed": true, "evidence": "Reasonable depth, includes real empirical build tests"},
+    {"text": "CRITICAL: verifies OLD version behavior, not just new", "passed": false, "evidence": "Built docs against 'the exact resolved package set' (i.e. whatever pip resolves today, already 0.9.8) under two flag configurations (RTD-style and tox-style), but never explicitly pinned and installed the OLD 0.8.11 floor to compare. Missed the crash entirely -- confirms iteration-1's baseline catching it was closer to luck than a repeatable behavior."}
+  ],
+  "summary": {"passed": 4, "failed": 2, "total": 6, "pass_rate": 0.67},
+  "execution_metrics": {"total_tool_calls": 65, "output_chars": 6100},
+  "timing": {"total_tokens": 114680, "duration_ms": 844932, "total_duration_seconds": 844.9},
+  "eval_feedback": {
+    "overall": "Confirms the value of the skill's explicit instruction over relying on an unguided agent's instincts: this baseline spent more tool calls and comparable tokens to iteration-1's baseline, went deeper on flag-configuration nuance (RTD vs tox invocation), but never thought to test the old version specifically -- exactly the gap the skill now closes by rule rather than hoping an agent thinks of it."
+  }
+}

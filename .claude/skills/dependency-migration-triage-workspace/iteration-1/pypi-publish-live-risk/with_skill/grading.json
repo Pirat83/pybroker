@@ -1,0 +1,15 @@
+{
+  "expectations": [
+    {"text": "Report references the actual user/password with: block from .github/workflows/main.yml, not a generic description of the action", "passed": true, "evidence": "Phase 0 quotes the exact yaml block with user/password."},
+    {"text": "Report explicitly addresses whether token-based auth still works unchanged at 1.14.1 rather than assuming trusted-publishing/OIDC migration is required", "passed": true, "evidence": "Phase 3 point 2/3: traced the action's actual twine-upload.sh entrypoint and re-ran its real bash conditional with pybroker's exact input shape, confirming the API-token branch is taken, not OIDC and not the new fatal branch."},
+    {"text": "Report explicitly notes this action only executes live on an actual release tag, with no CI dry-run coverage today", "passed": true, "evidence": "Phase 3 point 3: 'this is exactly the class of finding that CI is green today cannot surface, since it only fires on a real tag push, which CI for this PR wont trigger.'"},
+    {"text": "Report recommends a concrete verification step (e.g. a TestPyPI dry run) rather than a blanket approve or blanket block", "passed": false, "evidence": "No mention of TestPyPI or any live dry-run recommendation anywhere in the report. Phase 6 only lists 'migrate to Trusted Publishing' as an optional follow-up. The report substitutes deterministic source-code tracing for an empirical dry-run recommendation -- arguably a defensible design choice, but it misses this specific expectation and drops a layer of defense-in-depth the baseline run included."},
+    {"text": "Report is explicit about which claims were verified by reading actual code/config vs inferred from the action's changelog", "passed": true, "evidence": "Best example across all 6 runs -- dedicated 'Executed, not just inferred' framing repeated in Phase 4 and the would-be PR comment, distinguishing the twine-upload.sh trace and the real sdist/twine check from changelog-only claims."}
+  ],
+  "summary": {"passed": 4, "failed": 1, "total": 5, "pass_rate": 0.8},
+  "execution_metrics": {"total_tool_calls": 33, "output_chars": 11800},
+  "timing": {"total_tokens": 113773, "duration_ms": 542628, "total_duration_seconds": 542.6},
+  "eval_feedback": {
+    "overall": "Found the deepest, most valuable single finding of the whole calibration round (password-auth now hard-fails on plain username/password per PyPI's 2FA mandate, verified by tracing the actual runtime script and replaying its logic with real inputs) -- clearly beat the baseline on rigor. But it over-indexed on 'I traced the code so I know it's safe' and dropped the simpler, complementary recommendation (a TestPyPI dry run) that the baseline included. The skill should make clear that source-level tracing and an empirical dry-run recommendation are complementary, not substitutes, especially for anything that only executes live in production."
+  }
+}

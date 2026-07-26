@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "Report identifies the currently-enabled ruff rule set (E4, E7, E9, F) as narrow and explains why that limits the bump's blast radius", "passed": true, "evidence": "'pyproject.toml sets select = [E4,E7,E9,F]... default rule set expansion... No, explicit select fully replaces built-in defaults.'"},
+    {"text": "Report notes that CI already validates the bump directly via the lint/format checks running on the PR itself", "passed": true, "evidence": "Went further than expected: found that setup.cfg's tox lint/format envs use an UNPINNED ruff (deps = ruff), so CI already runs latest ruff daily via schedule.yml regardless of this PR -- a stronger, more specific version of this expectation."},
+    {"text": "Report clearly separates 'required migration from this version bump' from 'optional new rule categories you could adopt' rather than conflating them", "passed": true, "evidence": "Vacuous pass -- report doesn't raise optional rule categories at all, so there is nothing to conflate."},
+    {"text": "Report does not claim a code bug was found without tracing actual dataflow to confirm it's reachable", "passed": true, "evidence": "No bug claimed anywhere in the report."}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0},
+  "execution_metrics": {"total_tool_calls": 22, "output_chars": 5100},
+  "timing": {"total_tokens": 57320, "duration_ms": 244180, "total_duration_seconds": 244.2},
+  "eval_feedback": {
+    "overall": "Strong, efficient baseline -- fastest and cheapest of all 6 runs, and found a genuinely new fact (requirements.txt's ruff pin is disconnected from what CI actually installs) that neither our earlier main-conversation investigation nor the with-skill run surfaced as explicitly. Empirically ran both ruff versions against the real repo tree rather than just reasoning about it."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "skill_name": "dependency-migration-triage",
+    "skill_path": "/home/pirat/Projects/pybroker/.claude/skills/dependency-migration-triage",
+    "evals_run": ["nbsphinx-trivial-bump"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "nbsphinx-trivial-bump",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6, "time_seconds": 1007.0, "tokens": 121217, "tool_calls": 42, "errors": 0},
+      "expectations": [
+        {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": true, "evidence": "Phase 3"},
+        {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Phase 0"},
+        {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "Phase 5 -- treats the real old-vs-new build comparison as the regression test"},
+        {"text": "Explicit unhedged verdict", "passed": true, "evidence": "'verified safe by execution'"},
+        {"text": "Proportionate depth", "passed": true, "evidence": "Depth matches real signal"},
+        {"text": "CRITICAL: verifies OLD version behavior, not just new", "passed": true, "evidence": "Built docs with BOTH 0.8.11 (crashes) and 0.9.8 (clean) in matched venvs, citing case study 4"}
+      ],
+      "notes": ["Fix validated -- caught the exact bug iteration-1's with-skill run missed, by design, citing the new Phase 4 requirement and case study 4 directly."]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "nbsphinx-trivial-bump",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.67, "passed": 4, "failed": 2, "total": 6, "time_seconds": 844.9, "tokens": 114680, "tool_calls": 65, "errors": 0},
+      "expectations": [
+        {"text": "States nbsphinx has no version-sensitive config options in conf.py", "passed": false, "evidence": "Not inventoried"},
+        {"text": "Notes no CI builds docs, zero automated coverage", "passed": true, "evidence": "Section 2"},
+        {"text": "Does not fabricate a regression test for a non-issue", "passed": true, "evidence": "No test proposed"},
+        {"text": "Explicit unhedged verdict", "passed": true, "evidence": "'Safe to merge.'"},
+        {"text": "Proportionate depth", "passed": true, "evidence": "Reasonable"},
+        {"text": "CRITICAL: verifies OLD version behavior, not just new", "passed": false, "evidence": "Only tested whatever pip resolves today (already 0.9.8), never pinned/tested the old 0.8.11 floor. Missed the crash."}
+      ],
+      "notes": ["Fresh baseline run missed the crash this time -- confirms iteration-1's baseline catching it was closer to luck than a repeatable behavior, unlike the skill's now-deterministic check."]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 1007.0, "stddev": 0.0, "min": 1007.0, "max": 1007.0},
+      "tokens": {"mean": 121217, "stddev": 0.0, "min": 121217, "max": 121217}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.67, "stddev": 0.0, "min": 0.67, "max": 0.67},
+      "time_seconds": {"mean": 844.9, "stddev": 0.0, "min": 844.9, "max": 844.9},
+      "tokens": {"mean": 114680, "stddev": 0.0, "min": 114680, "max": 114680}
+    },
+    "delta": {
+      "pass_rate": "+0.33",
+      "time_seconds": "+162.1",
+      "tokens": "+6537"
+    }
+  },
+  "notes": [
+    "Iteration-2 vs iteration-1: with-skill pass rate went 0.83 -> 1.00 (the fix worked). Without-skill (baseline) pass rate went 0.80 -> 0.67 -- it got WORSE, because this run's baseline happened not to think of testing the old version, unlike iteration-1's baseline which did. This is exactly the argument for the skill: an unguided agent's thoroughness on this specific check is inconsistent run to run, while the skill now guarantees it via an explicit rule.",
+    "with_skill now costs noticeably more time (1007s vs 845s) and is roughly comparable in tokens to this run's baseline (121k vs 115k) -- the added verification step in Phase 4 has a real, non-trivial cost, but it's the cost of reliably catching a real bug rather than sometimes catching it by luck."
+  ]
+}
