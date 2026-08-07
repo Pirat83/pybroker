@@ -11,29 +11,30 @@
 ## Algorithmic Trading in Python with Machine Learning
 
 Are you looking to enhance your trading strategies with the power of Python and
-machine learning? Then you need to check out **PyBroker**! This Python framework
-is designed for developing algorithmic trading strategies, with a focus on
+machine learning? **PyBroker** is a Python framework
+designed for developing algorithmic trading strategies, with a focus on
 strategies that use machine learning. With PyBroker, you can easily create and
 fine-tune trading rules, build powerful models, and gain valuable insights into
 your strategy’s performance.
 
 ## Key Features
 
-- A super-fast backtesting engine built in [NumPy](https://numpy.org/) and accelerated with [Numba](https://numba.pydata.org/).
-- The ability to create and execute trading rules and models across multiple instruments with ease.
-- Access to historical data from [Alpaca](https://alpaca.markets/), [Yahoo Finance](https://finance.yahoo.com/), [AKShare](https://github.com/akfamily/akshare), or from [your own data provider](https://www.pybroker.com/en/latest/notebooks/7.%20Creating%20a%20Custom%20Data%20Source.html).
-- The option to train and backtest models using [Walkforward Analysis](https://www.pybroker.com/en/latest/notebooks/6.%20Training%20a%20Model.html#Walkforward-Analysis), which simulates how the strategy would perform during actual trading.
-- More reliable trading metrics that use randomized [bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) to provide more accurate results.
-- Caching of downloaded data, indicators, and models to speed up your development process.
-- Parallelized computations that enable faster performance.
+* A super-fast backtesting engine built in [NumPy](https://numpy.org/) and accelerated with [Numba](https://numba.pydata.org/).
+* Easy creation of trading rules and models for executing across multiple instruments.
+* Integration of trading signals across [multiple time intervals](https://www.pybroker.com/en/latest/notebooks/15.%20Multiple%20Time%20Intervals.html), including daily, weekly, and monthly.
+* Access to historical data from [Alpaca](https://alpaca.markets/), [Yahoo Finance](https://finance.yahoo.com/), [AKShare](https://github.com/akfamily/akshare), or from [your own data provider](https://www.pybroker.com/en/latest/notebooks/7.%20Creating%20a%20Custom%20Data%20Source.html).
+* Model training and backtesting using [Walkforward Analysis](https://www.pybroker.com/en/latest/notebooks/6.%20Training%20a%20Model.html#Walkforward-Analysis), which simulates how the strategy would perform during actual trading.
+* Reliable trading metrics that use randomized [bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) to provide more accurate results.
+* [Parameter optimization](https://www.pybroker.com/en/latest/notebooks/12.%20Parameter%20Optimization.html) with [Optuna](https://optuna.org/) to select the best strategy parameters.
+* [Caching](https://www.pybroker.com/en/latest/notebooks/1.%20Getting%20Started%20with%20Data%20Sources.html#Caching-Data) of downloaded data, indicators, and models to speed up your development process.
+* [Parallelized](https://www.pybroker.com/en/latest/notebooks/11.%20Configuring%20Parallelization.html) computation and training for faster performance.
+* [Agent Skills](https://www.pybroker.com/en/latest/agent-skills.html) that help AI agents write trading strategies and backtests using PyBroker.
 
-With PyBroker, you'll have all the tools you need to create winning trading
-strategies backed by data and machine learning. Start using PyBroker today and
-take your trading to the next level!
+With PyBroker, you will have the tools to build, test, and evaluate algorithmic trading strategies backed by machine learning.
 
 ## Installation
 
-PyBroker supports Python 3.9+ on Windows, Mac, and Linux. You can install
+PyBroker supports Python 3.11+ on Windows, Mac, and Linux. You can install
 PyBroker using ``pip``:
 
 ```bash
@@ -48,7 +49,7 @@ Or you can clone the Git repository with:
 
 ## A Quick Example
 
-Get a glimpse of what backtesting with PyBroker looks like with these code
+Here's a glimpse of what backtesting with PyBroker looks like with these code
 snippets:
 
 **Rule-based Strategy**:
@@ -67,7 +68,7 @@ snippets:
          # Set a stop loss of 2%.
          ctx.stop_loss_pct = 2
 
-   strategy = Strategy(YFinance(), start_date='1/1/2022', end_date='7/1/2022')
+   strategy = Strategy(YFinance(), start_date='1/1/2025', end_date='8/1/2026')
    strategy.add_execution(
       exec_fn, ['AAPL', 'MSFT'], indicators=highest('high_10d', 'close', period=10))
    # Run the backtest after 20 days have passed.
@@ -80,7 +81,7 @@ snippets:
    import pybroker
    from pybroker import Alpaca, Strategy
 
-   def train_fn(train_data, test_data, ticker):
+   def train_fn(symbol, train_data, test_data):
       # Train the model using indicators stored in train_data.
       ...
       return trained_model
@@ -90,15 +91,13 @@ snippets:
 
    def exec_fn(ctx):
       preds = ctx.preds('my_model')
-      # Open a long position given my_model's latest prediction.
       if not ctx.long_pos() and preds[-1] > buy_threshold:
          ctx.buy_shares = 100
-      # Close the long position given my_model's latest prediction.
       elif ctx.long_pos() and preds[-1] < sell_threshold:
          ctx.sell_all_shares()
 
    alpaca = Alpaca(api_key=..., api_secret=...)
-   strategy = Strategy(alpaca, start_date='1/1/2022', end_date='7/1/2022')
+   strategy = Strategy(alpaca, start_date='1/1/2025', end_date='8/1/2026')
    strategy.add_execution(exec_fn, ['AAPL', 'MSFT'], models=my_model)
    # Run Walkforward Analysis on 1 minute data using 5 windows with 50/50 train/test data.
    result = strategy.walkforward(timeframe='1m', windows=5, train_size=0.5)
@@ -109,13 +108,22 @@ snippets:
 - [Getting Started with Data Sources](https://www.pybroker.com/en/latest/notebooks/1.%20Getting%20Started%20with%20Data%20Sources.html)
 - [Backtesting a Strategy](https://www.pybroker.com/en/latest/notebooks/2.%20Backtesting%20a%20Strategy.html)
 - [Evaluating with Bootstrap Metrics](https://www.pybroker.com/en/latest/notebooks/3.%20Evaluating%20with%20Bootstrap%20Metrics.html)
-- [Ranking and Position Sizing](https://www.pybroker.com/en/latest/notebooks/4.%20Ranking%20and%20Position%20Sizing.html)
+- [Ranking Long and Short Signals](https://www.pybroker.com/en/latest/notebooks/4.%20Ranking%20Long%20and%20Short%20Signals.html)
 - [Writing Indicators](https://www.pybroker.com/en/latest/notebooks/5.%20Writing%20Indicators.html)
 - [Training a Model](https://www.pybroker.com/en/latest/notebooks/6.%20Training%20a%20Model.html)
 - [Creating a Custom Data Source](https://www.pybroker.com/en/latest/notebooks/7.%20Creating%20a%20Custom%20Data%20Source.html)
 - [Applying Stops](https://www.pybroker.com/en/latest/notebooks/8.%20Applying%20Stops.html)
 - [Rebalancing Positions](https://www.pybroker.com/en/latest/notebooks/9.%20Rebalancing%20Positions.html)
 - [Rotational Trading](https://www.pybroker.com/en/latest/notebooks/10.%20Rotational%20Trading.html)
+- [Configuring Parallelization](https://www.pybroker.com/en/latest/notebooks/11.%20Configuring%20Parallelization.html)
+- [Parameter Optimization](https://www.pybroker.com/en/latest/notebooks/12.%20Parameter%20Optimization.html)
+- [Margin Trading](https://www.pybroker.com/en/latest/notebooks/13.%20Margin%20Trading.html)
+- [Modeling Slippage](https://www.pybroker.com/en/latest/notebooks/14.%20Modeling%20Slippage.html)
+- [Multiple Time Intervals](https://www.pybroker.com/en/latest/notebooks/15.%20Multiple%20Time%20Intervals.html)
+- [Time Series Models](https://www.pybroker.com/en/latest/notebooks/16.%20Time%20Series%20Models.html)
+- [Multi-Symbol Models](https://www.pybroker.com/en/latest/notebooks/17.%20Multi-Symbol%20Models.html)
+- [Dynamic Symbol Selection](https://www.pybroker.com/en/latest/notebooks/18.%20Dynamic%20Symbol%20Selection.html)
+- [Agent Skills](https://www.pybroker.com/en/latest/agent-skills.html)
 - [FAQs](https://www.pybroker.com/en/latest/notebooks/FAQs.html)
 
 ## Online Documentation
@@ -128,6 +136,3 @@ snippets:
 
 <img src="https://github.com/edtechre/pybroker/blob/master/docs/_static/email-image.png?raw=true">
 
-## Market-Moving Stock News & Alerts
-
-**AI-driven market analysis for the stocks you follow.** Receive real-time AI alerts and sentiment analysis for 10,000+ tickers at [www.movealerts.ai](https://www.movealerts.ai).

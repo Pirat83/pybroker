@@ -13,15 +13,22 @@ import re
 from pybroker.cache import CacheDateFields
 from .fixtures import *  # noqa: F401
 from pybroker.common import BarData, DataCol, IndicatorSymbol, to_datetime
+from pybroker.config import StrategyConfig
+from pybroker.optimize import hyperparam
+from pybroker.scope import StaticScope
+from pybroker.strategy import Strategy
+from pybroker.vect import highv
 from pybroker.indicator import (
     _to_bar_data,
     Indicator,
     IndicatorsMixin,
     IndicatorSet,
+    IntervalBoundIndicator,
     adx,
     aroon_diff,
     aroon_down,
     aroon_up,
+    atr,
     close_minus_ma,
     cubic_deviation,
     cubic_trend,
@@ -69,7 +76,7 @@ def cache_date_fields(data_source_df):
 
 
 @pytest.fixture(params=[True, False])
-def disable_parallel(request):
+def parallel_indicators(request):
     return request.param
 
 
@@ -145,6 +152,58 @@ class TestIndicator:
     def test_repr(self, hhv_ind):
         assert repr(hhv_ind) == "Indicator('hhv', {'n': 5})"
 
+    def test_intervals(self, hhv_ind):
+        bound = hhv_ind.intervals("weekly", 5)
+        assert isinstance(bound, IntervalBoundIndicator)
+        assert bound.indicator is hhv_ind
+        assert bound.intervals == frozenset(["weekly", 5])
+
+    def test_intervals_scalar(self, hhv_ind):
+        bound = hhv_ind.intervals("monthly")
+        assert bound.intervals == frozenset(["monthly"])
+
+    def test_intervals_normalizes_durations(self, hhv_ind):
+        assert hhv_ind.intervals("05m").intervals == frozenset(["5m"])
+
+    def test_intervals_when_no_args_then_error(self, hhv_ind):
+        with pytest.raises(
+            ValueError,
+            match=re.escape(
+                "Indicator.intervals() requires at least one interval."
+            ),
+        ):
+            hhv_ind.intervals()
+
+    def test_intervals_when_duplicate_then_error(self, hhv_ind):
+        with pytest.raises(
+            ValueError, match=re.escape("Duplicate interval: 'weekly'.")
+        ):
+            hhv_ind.intervals("weekly", "weekly")
+
+    def test_intervals_base_sentinel(self, hhv_ind):
+        bound = hhv_ind.intervals("base", "weekly")
+        assert bound.intervals == frozenset(["base", "weekly"])
+
+    def test_intervals_when_duplicate_base_then_error(self, hhv_ind):
+        with pytest.raises(
+            ValueError, match=re.escape("Duplicate interval: 'base'.")
+        ):
+            hhv_ind.intervals("base", "base")
+
+    def test_intervals_when_invalid_interval_then_error(self, hhv_ind):
+        with pytest.raises(
+            ValueError, match="interval compression requires n > 1."
+        ):
+            hhv_ind.intervals(1)
+
+    def test_intervals_when_list_then_error(self, hhv_ind):
+        # Mirroring add_execution(intervals=[...]) into the varargs binder
+        # must fail cleanly, not with an unhashable-type TypeError.
+        with pytest.raises(
+            ValueError, match=re.escape("Invalid interval ['weekly']")
+        ):
+            hhv_ind.intervals(["weekly"])
+
 
 @pytest.mark.usefixtures("setup_teardown")
 class TestIndicatorsMixin:
@@ -156,65 +215,77 @@ class TestIndicatorsMixin:
 
     @pytest.mark.usefixtures("setup_ind_cache")
     def test_compute_indicators(
-        self, ind_syms, data_source_df, cache_date_fields, disable_parallel
+        self,
+        ind_syms,
+        data_source_df,
+        cache_date_fields,
+        parallel_indicators,
     ):
         mixin = IndicatorsMixin()
         ind_data = mixin.compute_indicators(
             df=data_source_df,
             indicator_syms=ind_syms,
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         self._assert_indicators(ind_data, ind_syms, data_source_df)
 
     @pytest.mark.usefixtures("setup_ind_cache")
     def test_compute_indicators_when_empty_data(
-        self, ind_syms, cache_date_fields, disable_parallel
+        self, ind_syms, cache_date_fields, parallel_indicators
     ):
         mixin = IndicatorsMixin()
         ind_data = mixin.compute_indicators(
             df=pd.DataFrame(columns=[col.value for col in DataCol]),
             indicator_syms=ind_syms,
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         assert len(ind_data) == 0
 
     @pytest.mark.usefixtures("setup_enabled_ind_cache")
     def test_compute_indicators_data_when_cached(
-        self, ind_syms, cache_date_fields, data_source_df, disable_parallel
+        self,
+        ind_syms,
+        cache_date_fields,
+        data_source_df,
+        parallel_indicators,
     ):
         mixin = IndicatorsMixin()
         mixin.compute_indicators(
             df=data_source_df,
             indicator_syms=ind_syms,
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         ind_data = mixin.compute_indicators(
             df=data_source_df,
             indicator_syms=ind_syms,
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         self._assert_indicators(ind_data, ind_syms, data_source_df)
 
     @pytest.mark.usefixtures("setup_enabled_ind_cache")
     def test_compute_indicators_when_partial_cached(
-        self, ind_syms, cache_date_fields, data_source_df, disable_parallel
+        self,
+        ind_syms,
+        cache_date_fields,
+        data_source_df,
+        parallel_indicators,
     ):
         mixin = IndicatorsMixin()
         mixin.compute_indicators(
             df=data_source_df,
             indicator_syms=ind_syms[:1],
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         ind_data = mixin.compute_indicators(
             df=data_source_df,
             indicator_syms=ind_syms,
             cache_date_fields=cache_date_fields,
-            disable_parallel=disable_parallel,
+            parallel_indicators=parallel_indicators,
         )
         self._assert_indicators(ind_data, ind_syms, data_source_df)
 
@@ -242,23 +313,33 @@ class TestIndicatorSet:
         with pytest.raises(ValueError, match="No indicators were added."):
             ind_set(data_source_df)
 
+    @pytest.mark.parametrize("as_list", [False, True])
+    def test_add_when_interval_bound_then_error(self, hhv_ind, as_list):
+        bound = hhv_ind.intervals("weekly")
+        with pytest.raises(
+            ValueError,
+            match="IndicatorSet requires Indicators, got "
+            "IntervalBoundIndicator",
+        ):
+            IndicatorSet().add([bound] if as_list else bound)
+
     @pytest.mark.parametrize(
         "df", [pd.DataFrame(), LazyFixture("data_source_df")]
     )
-    def test_call(self, df, hhv_ind, llv_ind, disable_parallel, request):
+    def test_call(self, df, hhv_ind, llv_ind, parallel_indicators, request):
         df = get_fixture(request, df)
         ind_set = IndicatorSet()
         ind_set.add([hhv_ind, llv_ind])
-        result = ind_set(df, disable_parallel)
+        result = ind_set(df, parallel_indicators)
         assert len(result) == len(df)
         assert set(result.columns) == set(["date", "symbol", "hhv", "llv"])
 
     def test_call_per_symbol_layout_and_values(
-        self, data_source_df, hhv_ind, llv_ind, disable_parallel
+        self, data_source_df, hhv_ind, llv_ind, parallel_indicators
     ):
         ind_set = IndicatorSet()
         ind_set.add([hhv_ind, llv_ind])
-        result = ind_set(data_source_df, disable_parallel)
+        result = ind_set(data_source_df, parallel_indicators)
 
         sym_col = DataCol.SYMBOL.value
         date_col = DataCol.DATE.value
@@ -393,6 +474,12 @@ def test_wrappers(fn, values, period, expected):
             {"field": "close", "lookback": 10, "atr_length": 20, "scale": 0.5},
         ),
         (
+            atr,
+            {
+                "lookback": 10,
+            },
+        ),
+        (
             adx,
             {
                 "lookback": 10,
@@ -462,3 +549,114 @@ def test_indicators(fn, args):
     series = indicator(bar_data)
     assert len(series) == n
     assert np.array_equal(series.index.to_numpy(), dates)
+
+
+@pytest.fixture(autouse=True)
+def clear_hyperparams_for_memo():
+    scope = StaticScope.instance()
+    scope._hyperparams.clear()
+    yield
+    scope._hyperparams.clear()
+
+
+def _hyperparam_hhv_indicator():
+    lookback = hyperparam("lookback", default=10, low=5, high=20, step=5)
+    hhv = indicator(
+        "hhv_memo",
+        lambda data, period: highv(data.high, period),
+        period=lookback,
+    )
+    return hhv
+
+
+def test_indicator_memo_disabled(data_source_df):
+    hhv = _hyperparam_hhv_indicator()
+    strategy = Strategy(
+        data_source_df,
+        "2020-01-02",
+        "2021-12-31",
+        StrategyConfig(),
+    )
+    strategy._indicator_memo_max = 0
+    ind_sym = IndicatorSymbol(hhv.name, "AAPL")
+    strategy.compute_indicators(
+        df=data_source_df,
+        indicator_syms=[ind_sym],
+        cache_date_fields=None,
+        parallel_indicators=False,
+        hyperparams={"lookback": 10},
+    )
+    assert len(strategy._indicator_memo_store()) == 0
+
+
+def test_indicator_memo_eviction(data_source_df):
+    hhv = _hyperparam_hhv_indicator()
+    strategy = Strategy(
+        data_source_df,
+        "2020-01-02",
+        "2021-12-31",
+        StrategyConfig(),
+    )
+    strategy._indicator_memo_max = 2
+    ind_sym = IndicatorSymbol(hhv.name, "AAPL")
+    for lookback in (5, 10, 15):
+        strategy.compute_indicators(
+            df=data_source_df,
+            indicator_syms=[ind_sym],
+            cache_date_fields=None,
+            parallel_indicators=False,
+            hyperparams={"lookback": lookback},
+        )
+    memo = strategy._indicator_memo_store()
+    assert len(memo) == 2
+    cached = {key[2] for key in memo}
+    assert (("lookback", 5),) not in cached
+    assert (("lookback", 10),) in cached
+    assert (("lookback", 15),) in cached
+
+
+def test_indicator_hyperparam_defaults_via_backtest(data_source_df):
+    lookback = hyperparam("lookback", default=10, low=5, high=20, step=5)
+    hhv = indicator(
+        "hhv_default",
+        lambda data, period: highv(data.high, period),
+        period=lookback,
+    )
+    strategy = Strategy(
+        data_source_df,
+        "2020-01-02",
+        "2021-12-31",
+        StrategyConfig(),
+    )
+    last_values: list[float] = []
+
+    def exec_fn(ctx):
+        vals = ctx.indicator(hhv.name)
+        if len(vals) > 0:
+            last_values.append(float(vals[-1]))
+
+    strategy.add_execution(exec_fn, "AAPL", indicators=[hhv])
+    strategy.backtest(parallel_indicators=False)
+    default_last = last_values[-1]
+
+    last_values.clear()
+    strategy.backtest(params={"lookback": 10}, parallel_indicators=False)
+    explicit_default_last = last_values[-1]
+
+    last_values.clear()
+    strategy.backtest(params={"lookback": 5}, parallel_indicators=False)
+    alternate_last = last_values[-1]
+
+    sym_df = data_source_df[data_source_df[DataCol.SYMBOL.value] == "AAPL"]
+    series_default = hhv(sym_df)
+    series_alternate = hhv(sym_df, hyperparams={"lookback": 5})
+    expected = float(series_default.iloc[-1])
+
+    assert default_last == explicit_default_last
+    assert default_last == expected
+    assert alternate_last == float(series_alternate.iloc[-1])
+    assert not np.allclose(
+        series_default.to_numpy(),
+        series_alternate.to_numpy(),
+        equal_nan=True,
+    )

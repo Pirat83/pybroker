@@ -10,12 +10,13 @@ import numpy as np
 import pandas as pd
 import pytest
 import re
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
-from joblib import Parallel
 from pybroker.common import (
     BarData,
-    default_parallel,
+    PriceType,
+    StopType,
+    bars_to_df,
     parse_timeframe,
     quantize,
     to_datetime,
@@ -68,6 +69,67 @@ def test_bar_data_get_custom_data_when_no_attr_then_error():
         AttributeError, match=re.escape("Attribute 'foo' not found.")
     ):
         bar_data.foo
+
+
+def test_bars_to_df():
+    date = np.full(10, np.datetime64("2022-02-02"))
+    open_ = np.full(10, 1.0)
+    high = np.full(10, 2.0)
+    low = np.full(10, 3.0)
+    close = np.full(10, 4.0)
+    volume = np.full(10, 5.0)
+    vwap = np.full(10, 6.0)
+    foo = np.full(10, 7.0)
+    bar_data = BarData(
+        date=date,
+        open=open_,
+        high=high,
+        low=low,
+        close=close,
+        volume=volume,
+        vwap=vwap,
+        foo=foo,
+    )
+    df = bars_to_df(bar_data)
+    assert df.columns.tolist() == [
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "vwap",
+        "foo",
+    ]
+    assert len(df) == 10
+    assert (df["date"].to_numpy() == date).all()
+    assert (df["open"].to_numpy() == open_).all()
+    assert (df["high"].to_numpy() == high).all()
+    assert (df["low"].to_numpy() == low).all()
+    assert (df["close"].to_numpy() == close).all()
+    assert (df["volume"].to_numpy() == volume).all()
+    assert (df["vwap"].to_numpy() == vwap).all()
+    assert (df["foo"].to_numpy() == foo).all()
+
+
+def test_bars_to_df_when_optional_cols_none():
+    date = np.full(10, np.datetime64("2022-02-02"))
+    open_ = np.full(10, 1.0)
+    high = np.full(10, 2.0)
+    low = np.full(10, 3.0)
+    close = np.full(10, 4.0)
+    bar_data = BarData(
+        date=date,
+        open=open_,
+        high=high,
+        low=low,
+        close=close,
+        volume=None,
+        vwap=None,
+    )
+    df = bars_to_df(bar_data)
+    assert df.columns.tolist() == ["date", "open", "high", "low", "close"]
+    assert len(df) == 10
 
 
 @pytest.mark.parametrize(
@@ -229,5 +291,126 @@ def test_verify_data_source_columns_when_missing_then_error():
         verify_data_source_columns(df)
 
 
-def test_default_parallel():
-    assert type(default_parallel()) is Parallel
+def test_json_safe_when_nat_then_null():
+    """NaTType subclasses datetime, so it would otherwise be serialized by the
+    datetime branch as the string "NaT" rather than as null."""
+    from pybroker.common import _json_safe
+
+    assert _json_safe(pd.NaT) is None
+    assert _json_safe(np.datetime64("NaT")) is None
+    assert _json_safe(pd.Timestamp("2021-01-04")) == "2021-01-04T00:00:00"
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (Decimal("NaN"), None),
+        (Decimal("Infinity"), "Infinity"),
+        (Decimal("-Infinity"), "-Infinity"),
+        (Decimal("1.5"), 1.5),
+    ],
+)
+def test_json_safe_non_finite_decimal(value, expected):
+    """Decimal('NaN') floats into a raw nan, which
+    json.dumps(allow_nan=False) rejects -- so one non-finite Decimal made
+    to_json_str() raise on an otherwise valid result. Infinities keep a
+    string sentinel so they stay distinguishable from missing values."""
+    import json
+
+    from pybroker.common import _json_safe
+
+    assert _json_safe(value) == expected
+    json.dumps({"v": _json_safe(value)}, allow_nan=False)
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (PriceType.CLOSE, "close"),
+        (StopType.LOSS, "loss"),
+        (date(2021, 2, 15), "2021-02-15"),
+        (np.array([1.0, 2.5]), [1.0, 2.5]),
+        (np.array([np.nan]), [None]),
+        (np.array([[1.0, 2.0], [3.0, np.nan]]), [[1.0, 2.0], [3.0, None]]),
+        (np.array(7.0), 7.0),
+        (frozenset({"b", "a"}), ["a", "b"]),
+        ({10, 2, 1}, [1, 2, 10]),
+        (b"bytes", "bytes"),
+        (np.bool_(True), True),
+        (np.bool_(False), False),
+        (timedelta(days=1), "P1DT0H0M0S"),
+        (np.timedelta64(1, "D"), "P1DT0H0M0S"),
+        (np.timedelta64("NaT"), None),
+        (pd.Period("2021Q1", freq="Q"), "2021Q1"),
+        (float("inf"), "Infinity"),
+        (float("-inf"), "-Infinity"),
+        (np.float64("inf"), "Infinity"),
+        (np.float64("-inf"), "-Infinity"),
+        ({np.int64(3): np.float64(1.5)}, {3: 1.5}),
+        ({("AAA", "BBB"): 1.5}, {'["AAA", "BBB"]': 1.5}),
+        ({frozenset({"b", "a"}): 1}, {'["a", "b"]': 1}),
+        (np.timedelta64(3, "M"), "3 months"),
+        (timedelta.max, "999999999 days, 23:59:59.999999"),
+        (
+            np.array(["2021-01-04"], dtype="datetime64[ns]"),
+            ["2021-01-04T00:00:00"],
+        ),
+        (
+            np.array([1], dtype="timedelta64[ns]"),
+            ["P0DT0H0M0.000000001S"],
+        ),
+    ],
+)
+def test_json_safe_total(value, expected):
+    """_json_safe is total: every input maps to JSON-serializable Python
+    types, so json.dumps(allow_nan=False) never raises on its output."""
+    import json
+
+    from pybroker.common import _json_safe
+
+    assert _json_safe(value) == expected
+    json.dumps({"v": _json_safe(value)}, allow_nan=False)
+
+
+def test_json_safe_fallback_deterministic():
+    """The str() fallback must not embed memory addresses: identical
+    backtests must serialize to identical JSON bytes across runs."""
+    from pybroker.common import _json_safe
+
+    class Marker:
+        pass
+
+    first = _json_safe(Marker())
+    second = _json_safe(Marker())
+    assert first == second
+    assert "0x" not in first
+
+
+def test_dataframe_records_drops_unnamed_index():
+    from pybroker.common import _dataframe_records
+
+    df = pd.DataFrame({"name": ["a", "b"], "value": [1, 2]})
+    records = _dataframe_records(df)
+    assert records == [
+        {"name": "a", "value": 1},
+        {"name": "b", "value": 2},
+    ]
+
+
+def test_dataframe_records_keeps_named_index():
+    from pybroker.common import _dataframe_records
+
+    df = pd.DataFrame({"value": [1, 2]}, index=pd.Index([10, 20], name="id"))
+    records = _dataframe_records(df)
+    assert records == [
+        {"id": 10, "value": 1},
+        {"id": 20, "value": 2},
+    ]
+
+
+def test_dataframe_records_when_negative_max_rows_then_error():
+    from pybroker.common import _dataframe_records
+
+    df = pd.DataFrame({"value": [1, 2]})
+    with pytest.raises(ValueError, match=re.escape("max_rows must be >= 0")):
+        _dataframe_records(df, max_rows=-1)

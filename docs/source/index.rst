@@ -8,14 +8,9 @@
 .. raw:: html
 
    <style>
-      @font-face {
-         font-family: Bosun;
-         src: url("_static/bosun03.otf") format("opentype");
-      }
-      #pybroker h1 {
-         font-family: Bosun;
-         font-weight: 900;
-         font-size: 3em;
+      .pybroker-logo {
+         max-width: min(450px, 100%);
+         height: auto;
          margin-bottom: 0.25em;
       }
       .shields a {
@@ -23,9 +18,9 @@
       }
    </style>
 
-================
-PyBroker
-================
+.. image:: ../_static/pybroker-logo-rtd.png
+   :alt: PyBroker
+   :class: pybroker-logo
 
 .. raw:: html
    
@@ -35,7 +30,7 @@ PyBroker
             alt="python">
       </a>
       <a href="https://pypi.org/project/lib-pybroker/">
-         <img src="https://img.shields.io/badge/pypi-v1.2.13-brightgreen.svg"
+         <img src="https://img.shields.io/badge/pypi-v1.2.14-brightgreen.svg"
             alt="PyPI">
       </a>
       <a href="https://www.pybroker.com/en/latest/license.html">
@@ -67,8 +62,8 @@ Algorithmic Trading in Python with Machine Learning
 ===================================================
 
 Are you looking to enhance your trading strategies with the power of Python and
-machine learning? Then you need to check out **PyBroker**! This Python framework
-is designed for developing algorithmic trading strategies, with a focus on
+machine learning? **PyBroker** is a Python framework
+designed for developing algorithmic trading strategies, with a focus on
 strategies that use machine learning. With PyBroker, you can easily create and
 fine-tune trading rules, build powerful models, and gain valuable insights into
 your strategy's performance.
@@ -76,24 +71,27 @@ your strategy's performance.
 Key Features
 ============
 
-* A super-fast backtesting engine built in `NumPy <https://numpy.org/>`_  and accelerated with `Numba <https://numba.pydata.org/>`_.
-* The ability to create and execute trading rules and models across multiple instruments with ease.
+* A super-fast backtesting engine built in `NumPy <https://numpy.org/>`_ and accelerated with `Numba <https://numba.pydata.org/>`_.
+* Easy creation of trading rules and models for executing across multiple instruments.
+* Integration of trading signals across `multiple time intervals <https://www.pybroker.com/en/latest/notebooks/15.%20Multiple%20Time%20Intervals.html>`_, including daily, weekly, and monthly.
 * Access to historical data from `Alpaca <https://alpaca.markets/>`_, `Yahoo Finance <https://finance.yahoo.com/>`_, `AKShare <https://github.com/akfamily/akshare>`_, or from `your own data provider <https://www.pybroker.com/en/latest/notebooks/7.%20Creating%20a%20Custom%20Data%20Source.html>`_.
-* The option to train and backtest models using `Walkforward Analysis <https://www.pybroker.com/en/latest/notebooks/6.%20Training%20a%20Model.html#Walkforward-Analysis>`_, which simulates how the strategy would perform during actual trading.
-* More reliable trading metrics that use randomized `bootstrapping <https://en.wikipedia.org/wiki/Bootstrapping_(statistics)>`_ to provide more accurate results.
-* Caching of downloaded data, indicators, and models to speed up your development process.
-* Parallelized computations that enable faster performance.
+* Model training and backtesting using `Walkforward Analysis <https://www.pybroker.com/en/latest/notebooks/6.%20Training%20a%20Model.html#Walkforward-Analysis>`_, which simulates how the strategy would perform during actual trading.
+* Reliable trading metrics that use randomized `bootstrapping <https://en.wikipedia.org/wiki/Bootstrapping_(statistics)>`_ to provide more accurate results.
+* `Parameter optimization <https://www.pybroker.com/en/latest/notebooks/12.%20Parameter%20Optimization.html>`_ with `Optuna <https://optuna.org/>`_ to select the best strategy parameters.
+* `Caching <https://www.pybroker.com/en/latest/notebooks/1.%20Getting%20Started%20with%20Data%20Sources.html#Caching-Data>`_ of downloaded data, indicators, and models to speed up your development process.
+* `Parallelized <https://www.pybroker.com/en/latest/notebooks/11.%20Configuring%20Parallelization.html>`_ computation and training for faster performance.
+* :doc:`Agent Skills <agent-skills>` that help AI agents write trading strategies and backtests using PyBroker.
 
-With PyBroker, you'll have all the tools you need to create winning trading
-strategies backed by data and machine learning. Start using PyBroker today and
-take your trading to the next level!
+
+With PyBroker, you will have the tools to build, test, and evaluate algorithmic trading strategies backed by machine learning.
+
 
 .. include:: install.rst
 
 A Quick Example
 ===============
 
-Get a glimpse of what backtesting with PyBroker looks like with these code
+Here's a glimpse of what backtesting with PyBroker looks like with these code
 snippets:
 
 **Rule-based Strategy**::
@@ -111,7 +109,7 @@ snippets:
          # Set a stop loss of 2%.
          ctx.stop_loss_pct = 2
 
-   strategy = Strategy(YFinance(), start_date='1/1/2022', end_date='7/1/2022')
+   strategy = Strategy(YFinance(), start_date='1/1/2025', end_date='8/1/2026')
    strategy.add_execution(
       exec_fn, ['AAPL', 'MSFT'], indicators=highest('high_10d', 'close', period=10))
    # Run the backtest after 20 days have passed.
@@ -122,7 +120,7 @@ snippets:
    import pybroker
    from pybroker import Alpaca, Strategy
 
-   def train_fn(train_data, test_data, ticker):
+   def train_fn(symbol, train_data, test_data):
       # Train the model using indicators stored in train_data.
       ...
       return trained_model
@@ -132,15 +130,13 @@ snippets:
 
    def exec_fn(ctx):
       preds = ctx.preds('my_model')
-      # Open a long position given my_model's latest prediction.
       if not ctx.long_pos() and preds[-1] > buy_threshold:
          ctx.buy_shares = 100
-      # Close the long position given my_model's latest prediction.
       elif ctx.long_pos() and preds[-1] < sell_threshold:
          ctx.sell_all_shares()
 
    alpaca = Alpaca(api_key=..., api_secret=...)
-   strategy = Strategy(alpaca, start_date='1/1/2022', end_date='7/1/2022')
+   strategy = Strategy(alpaca, start_date='1/1/2025', end_date='8/1/2026')
    strategy.add_execution(exec_fn, ['AAPL', 'MSFT'], models=my_model)
    # Run Walkforward Analysis on 1 minute data using 5 windows with 50/50 train/test data.
    result = strategy.walkforward(timeframe='1m', windows=5, train_size=0.5)
@@ -155,17 +151,26 @@ To learn how to use PyBroker, see the notebooks under the *User Guide*:
    notebooks/1. Getting Started with Data Sources
    notebooks/2. Backtesting a Strategy
    notebooks/3. Evaluating with Bootstrap Metrics
-   notebooks/4. Ranking and Position Sizing
+   notebooks/4. Ranking Long and Short Signals
    notebooks/5. Writing Indicators
    notebooks/6. Training a Model
    notebooks/7. Creating a Custom Data Source
    notebooks/8. Applying Stops
    notebooks/9. Rebalancing Positions
    notebooks/10. Rotational Trading
+   notebooks/11. Configuring Parallelization
+   notebooks/12. Parameter Optimization
+   notebooks/13. Margin Trading
+   notebooks/14. Modeling Slippage
+   notebooks/15. Multiple Time Intervals
+   notebooks/16. Time Series Models
+   notebooks/17. Multi-Symbol Models
+   notebooks/18. Dynamic Symbol Selection
+   Agent Skills <agent-skills>
    notebooks/FAQs
 
 `The notebooks above are also available on Github
-<https://github.com/edtechre/pybroker/tree/master/docs/notebooks>`_.
+<https://github.com/edtechre/pybroker/tree/master/docs/source/notebooks>`_.
 
 .. toctree::
    :maxdepth: 4
@@ -200,25 +205,16 @@ on quantitative finance and algorithmic trading:
 
 * Stefan Jansen, `Machine Learning for Algorithmic Trading, 2nd Edition <https://www.amazon.com/Machine-Learning-Algorithmic-Trading-alternative/dp/1839217715/>`_
 
-* Ernest P. Chan, `Machine Trading: Deploying Computer Algorithms to Conquer the Markets <https://www.amazon.com/Machine-Trading-Deploying-Computer-Algorithms-ebook/dp/B01N7NKVG0/>`_
-
-* Perry J. Kaufman, `Trading Systems and Methods, 6th Edition <https://www.amazon.com/Trading-Systems-Methods-Wiley-ebook/dp/B08141BBXR/>`_
-
 .. toctree::
       :maxdepth: 1
       :caption: Other Information
 
+      Benchmarking <benchmarking>
       Changelog <changelog>
       License <license>
 
 Contact
 =======
 
-.. image:: _static/email-image.png
+.. image:: ../_static/email-image.png
 
-.. toctree::
-   :caption: Stock News & Alerts
-
-   MoveAlerts.ai <https://www.movealerts.ai>
-
-**AI-driven market analysis for the stocks you follow.** Receive real-time AI alerts and sentiment analysis for 10,000+ tickers at `www.movealerts.ai <https://www.movealerts.ai>`_.

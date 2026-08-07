@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2023, Edward West
+# Copyright (C) 2026, Edward West
 # This file is distributed under the same license as the PyBroker package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PyBroker \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 16:35+0800\n"
+"POT-Creation-Date: 2026-08-06 20:16-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -17,81 +17,159 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/reference/pybroker.model.rst:2 4bf218f06c58486ca40632a1e8c3a284
+#: ../../source/reference/pybroker.model.rst:2 da63a2b8a70a458fbbbe8078de12d4a5
 msgid "pybroker.model module"
 msgstr ""
 
-#: c944c4f0930f41efb4ed7829870a55df of pybroker.model:1
+#: f7c2e734742b480aae9dd31fdc0e771c of pybroker.model:1
 msgid "Contains model related functionality."
 msgstr ""
 
-#: bcdbffa0ffd04a63be59611157e15651 of pybroker.model.CachedModel:1
-msgid "Bases: :py:class:`~typing.NamedTuple`"
-msgstr ""
-
-#: 76c816c8ae9741fa8f897f97febc8aff of pybroker.model.CachedModel:1
+#: 3a86749f3b8a4a6b80f0870b632a948d of pybroker.model.CachedModel:1
 msgid "Stores cached model data."
 msgstr ""
 
-#: f59aa834adbd44788e2cc9d7bc233b05 of pybroker.model.CachedModel:5
-msgid "Trained model instance."
-msgstr ""
-
-#: 9a71b734f9ec420897e9c890e0813698 c33ed12a6d8d453faea45d54c481827f of
-#: pybroker.model.CachedModel
-msgid "type"
-msgstr ""
-
-#: 1d1376d1619747ba84c8198fb5953c2e of pybroker.model.CachedModel:7
-msgid "Any"
-msgstr ""
-
-#: bf57d1a8d6514986bdb6ed3d70a292b6 of pybroker.model.CachedModel:11
+#: 9235e8e989c541c6984dfc2c6d505524 of pybroker.model.CachedModel:5
 msgid ""
 "Names of the columns to be used as input for the model when making "
 "predictions."
 msgstr ""
 
-#: 8119479b0fdf41359ead6a595ed6a300 of pybroker.model.CachedModel:14
+#: 57523d27676149bf9614ec930381f8bc 794445a5b5d04de7a43754d9f663eacd of
+#: pybroker.model.CachedModel
+msgid "type"
+msgstr ""
+
+#: 921a6456265a491784bf91c124a28d0c of pybroker.model.CachedModel:8
 msgid "tuple[str] | None"
 msgstr ""
 
-#: ../../docstring 936b7775490a4e6c9ddd8563257ddcf1 of
-#: pybroker.model.CachedModel.input_cols:1
-msgid "Alias for field number 1"
+#: d3610d226baa4b389263b9c238311a1f of pybroker.model.CachedModel:12
+msgid ""
+"Names of the columns that lag features were built from at training time, "
+"in feature block order. ``None`` when the model was not trained with "
+"``lags``, and when loading a model cached before this field existed."
 msgstr ""
 
-#: ../../docstring acf6e1f6ad5146b996a9bf1898c24cf9 of
-#: pybroker.model.CachedModel.model:1
-msgid "Alias for field number 0"
+#: e86e6d97c67441deb66fbcbfe67d4a74 of pybroker.model.CachedModel:17
+msgid "tuple[str, ...] | None"
 msgstr ""
 
-#: b5a7b2b4047a4fdb829c0de7efb3843f f062a147e6d44cb2bafd0970e6e2c378 of
-#: pybroker.model.ModelLoader:1 pybroker.model.ModelTrainer:1
-msgid "Bases: :py:class:`~pybroker.model.ModelSource`"
+#: c10d53da9b50453697048e591380ed30 of pybroker.model.CachedModel.model:1
+msgid "Trained model instance."
 msgstr ""
 
-#: 0cf866016bfa4fd8a10a97ebe09132ca of pybroker.model.ModelLoader:1
+#: db12f2ea3ee14ebe96162d0e3f7b60ea of pybroker.model.IntervalBoundModel:1
+msgid ""
+"A :class:`.ModelSource` bound to one or more compression intervals, "
+"returned by :meth:`ModelSource.intervals` and passed to the ``models`` "
+"parameter of :meth:`pybroker.strategy.Strategy.add_execution`."
+msgstr ""
+
+#: cec3069bb14a465a9bd0d711ad148893 of
+#: pybroker.model.IntervalBoundModel.intervals:1
+msgid ""
+"Normalized :class:`~pybroker.interval.TimeframeInterval`\\ s the model is"
+" trained on. May include the literal ``'base'`` for the base timeframe."
+msgstr ""
+
+#: 0df311ff7b2d451295800d614e78cf26 of
+#: pybroker.model.IntervalBoundModel.source:1
+msgid "The bound :class:`.ModelSource`."
+msgstr ""
+
+#: 24cd794d27904ec380de39c583fd73f0 of pybroker.model.LagSeriesKey:1
+msgid "Internal cache key for a full-history lagged series."
+msgstr ""
+
+#: d97503f0674d47cf8721b0a4e07d113d of pybroker.model.ModelInput:1
+msgid "Internal numpy-backed model input with optional lag feature metadata."
+msgstr ""
+
+#: 721eaec6f2334883807a3990cce8836f of pybroker.model.ModelInput:3
+msgid ""
+"Not part of the public API. User-facing code receives "
+":class:`pandas.DataFrame` instances materialized via "
+":meth:`to_dataframe`, with any lag feature matrix passed explicitly as a "
+"separate :class:`numpy.ndarray` argument."
+msgstr ""
+
+#: 16472458e4d94387b5b6697d1e3d81d6 of
+#: pybroker.model.ModelInput.drop_lag_warmup:1
+msgid "Drops the leading rows whose lag features are not yet defined."
+msgstr ""
+
+#: 70c4ac5fe54545cdb7d8a59518a2c4b8 of
+#: pybroker.model.ModelInput.drop_lag_warmup:3
+msgid ""
+"Only each symbol's warmup region is trimmed. Dropping every row with a "
+"NaN lag feature would also remove rows from the middle of the series "
+"whenever a lag column is sparse -- an event column registered with "
+":func:`pybroker.scope.register_columns` is NaN except on the bars it "
+"fires, and an all-NaN ``volume`` column is routine for index, FX and CFD "
+"series. Either silently shrinks the training set, or empties it."
+msgstr ""
+
+#: b0daf63f88114059a5c04367284854b7 of
+#: pybroker.model.ModelInput.drop_lag_warmup:10
+msgid ""
+"Pooled input stacks one block per symbol, so each block carries its own "
+"warmup at its own offset. Trimming only the front of the matrix would "
+"leave every block after the first with its NaN rows intact, which "
+"``sklearn.fit`` rejects outright."
+msgstr ""
+
+#: a53bb1d4c8e44f3798b141f402193a08 of
+#: pybroker.model.ModelInput.lag_warmup_len:1
+msgid "Returns how many leading rows have undefined lag features."
+msgstr ""
+
+#: 0cb8a55e1cdc4e8381b92002619fe344 of
+#: pybroker.model.ModelInput.lag_warmup_len:3
+msgid ""
+"These rows cannot be handed to an estimator: sklearn rejects NaN "
+"outright, and a NaN-tolerant predict_fn quietly produces a prediction "
+"from features that do not exist yet."
+msgstr ""
+
+#: 24d4ab8f00e2439b975cb3d859576188 of
+#: pybroker.model.ModelInput.select_columns:1
+msgid "Returns a view restricted to ``columns``."
+msgstr ""
+
+#: 34666a62f6c448abafb6fb6f4f99a82c of pybroker.model.ModelInput.slice:1
+msgid "Returns a row slice sharing backing array memory."
+msgstr ""
+
+#: ea218ab3597c4adb807d9e2d46d0d637 of pybroker.model.ModelInput.slice_range:1
+msgid "Returns a row range sharing backing array memory."
+msgstr ""
+
+#: 90c6b60eeabd4b80b4d491290643d879 of pybroker.model.ModelInput.to_dataframe:1
+msgid "Materializes a DataFrame of the input columns."
+msgstr ""
+
+#: a15f679f995246e7b1661f19068d2470 of pybroker.model.ModelLoader:1
 msgid "Loads a pre-trained model."
 msgstr ""
 
-#: 62e0aeae35b948f3a7ade91ee7e2695a 8d47ed3081c840088eb0cade8de2eb83
-#: fb4954de8bc74b7d90c13ed2898e6d33 of pybroker.model.ModelLoader
-#: pybroker.model.ModelLoader.__call__ pybroker.model.ModelSource
-#: pybroker.model.ModelTrainer pybroker.model.ModelTrainer.__call__
-#: pybroker.model.ModelsMixin.train_models pybroker.model.model
+#: ../../source/reference/pybroker.model.rst 0fe4ceafd12e41238fc3de5446078e55
+#: 256732941ba24da1acef22e5c054065f 4abd77e373c84a39806577980aabb9c5
+#: 5e5a2fcd92ab44f0a769ef2dfa0b6204 619f5e91b08549b79b2c25ad3012676d
+#: 67118fdba4364e838c948aed29fdeee4 b7ef8aa7e74142a281f7d634eca24592
+#: c3315155b2584ed9b091d8cd473ed931 c87a52ae308e493ba521b7422832fdb4
 msgid "Parameters"
 msgstr ""
 
-#: 02c2df4c849a406ab9156f868a6f1374 f4c1832bce264a808a48012d6bc88d94 of
-#: pybroker.model.ModelLoader:3 pybroker.model.ModelSource:4
-#: pybroker.model.ModelTrainer:3
+#: 27ceaac1396848e8808f46eea5f34047 53685221ed994d7481b5727c1a044e52
+#: 9b6bfbc3d66f4fb9885ff299bfea9d20 of pybroker.model.ModelLoader:3
+#: pybroker.model.ModelSource:4 pybroker.model.ModelTrainer:3
 msgid "Name of model."
 msgstr ""
 
-#: 3a777154afe047f68bdcd0b7837288a4 of pybroker.model.ModelLoader:4
+#: 9352e78d3ff4410daadf549e64bed536 of pybroker.model.ModelLoader:4
 msgid ""
 "``Callable[[symbol: str, train_start_date: datetime, train_end_date: "
 "datetime, ...], DataFrame]`` used to load and return a pre-trained model."
@@ -100,79 +178,144 @@ msgid ""
 "names to to be used as input for the model when making predictions."
 msgstr ""
 
-#: 114da3a02cd248ad9f67d72603fe61ff e9c8def90ea54fa087d37382b8916c17 of
-#: pybroker.model.ModelLoader:10 pybroker.model.ModelSource:5
-#: pybroker.model.ModelTrainer:10
+#: 662b28ee4a574216a41ba01e605f1763 a8449dece40a496ba9e9a2dc3b7b5bad
+#: be0f020c528e412999469149971dfa97 of pybroker.model.ModelLoader:10
+#: pybroker.model.ModelSource:5 pybroker.model.ModelTrainer:16
 msgid ""
 ":class:`Iterable` of names of :class:`pybroker.indicator.Indicator`\\ s "
 "used as features of the model."
 msgstr ""
 
-#: 8feb4a0c2073494c9e04b9409cc04c73 966653ae241f4a15b9b8db36fee5209c of
-#: pybroker.model.ModelLoader:13 pybroker.model.ModelSource:8
-#: pybroker.model.ModelTrainer:13 pybroker.model.model:17
+#: 3d535c690ba54cc684f45cff352aa332 3f0928722c85448dbe00c19c796502ae
+#: ff49ad2f4de444abbe08e82c48b42e77 of pybroker.model.ModelLoader:13
+#: pybroker.model.ModelSource:8 pybroker.model.ModelTrainer:19
 msgid ""
-":class:`Callable[[DataFrame], DataFrame]` for preprocessing input data "
-"passed to the model when making predictions. If set, ``input_data_fn`` "
-"will be called with a :class:`pandas.DataFrame` containing all test data."
+"``Callable[[DataFrame], DataFrame]`` for preprocessing input data passed "
+"to the model when making predictions. If set, ``input_data_fn`` will be "
+"called with a :class:`pandas.DataFrame` containing all test data."
 msgstr ""
 
-#: 305c17f18829438b8dfd90b3be249868 fc55b164769345dd8384ff6d165439f8 of
-#: pybroker.model.ModelLoader:17 pybroker.model.ModelSource:12
-#: pybroker.model.ModelTrainer:17 pybroker.model.model:21
+#: 04ecd94019e9434fa157e53c16e27754 75dfca94778544ecbc53a164f5c206e1
+#: f8287443f7c14c1bbcf42e9aae4f4cd7 of pybroker.model.ModelLoader:17
+#: pybroker.model.ModelSource:12 pybroker.model.ModelTrainer:23
 msgid ""
-":class:`Callable[[Model, DataFrame], ndarray]` that overrides calling the"
-" model's default ``predict`` function. If set, ``predict_fn`` will be "
+"``Callable[[Model, DataFrame], ndarray]`` that overrides calling the "
+"model's default ``predict`` function. If set, ``predict_fn`` will be "
 "called with the trained model and a :class:`pandas.DataFrame` containing "
-"all test data."
+"all test data. When ``lags`` is set, it is instead called with the lag "
+"feature matrix (:class:`numpy.ndarray`) in place of the DataFrame."
 msgstr ""
 
-#: 8d7584aa9fb4444d9bd8cbabff004391 of pybroker.model.ModelLoader:21
+#: 10f1445dddb342b1bcc6d823d64aa0f9 80493ff87fbd4627b5383ba6ba95bd6f
+#: 8a30f6918dd24e709bd6a10c5402baef a8f4ed347a964e5cb8c40350563480a5 of
+#: pybroker.model.ModelLoader:23 pybroker.model.ModelSource:28
+#: pybroker.model.ModelTrainer:29 pybroker.model.model:87
+msgid ""
+"If ``True``, the model is trained once per execution using combined "
+"multi-symbol data. Defaults to ``False``."
+msgstr ""
+
+#: 3bfd60759ded4444ab4554cdf37c9d18 of pybroker.model.ModelLoader:25
 msgid "``dict`` of kwargs to pass to ``load_fn``."
 msgstr ""
 
-#: 8d28358577534222abb2d390895e8a77 of pybroker.model.ModelLoader.__call__:1
+#: 5a466928c67341c2bc64d2af6d873190 of pybroker.model.ModelLoader.__call__:1
 msgid "Loads pre-trained model."
 msgstr ""
 
-#: dd8ba2d2116f4a5f8cd92b445a8a868f of pybroker.model.ModelLoader.__call__:3
+#: a8ba71416100411da95db9a7d1f3b700 of pybroker.model.ModelLoader.__call__:3
 msgid "Ticker symbol for loading the pre-trained model."
 msgstr ""
 
-#: 2d9b1437a67c4a2b9e9ff6d074e256c8 of pybroker.model.ModelLoader.__call__:4
+#: aae27e8f9e944ffcb607395f3f3b0895 of pybroker.model.ModelLoader.__call__:4
 msgid "Start date of training window."
 msgstr ""
 
-#: 2d9b1437a67c4a2b9e9ff6d074e256c8 of pybroker.model.ModelLoader.__call__:5
+#: ef272c5f08ef4872b7535f64def18dc1 of pybroker.model.ModelLoader.__call__:5
 msgid "End date of training window."
 msgstr ""
 
-#: da2e8415075646719311f726d39d84e9 of pybroker.model.ModelLoader.__call__
-#: pybroker.model.ModelTrainer.__call__ pybroker.model.ModelsMixin.train_models
-#: pybroker.model.model
+#: ../../source/reference/pybroker.model.rst 1cc1fa86c7aa4d07bb00906aef6548be
+#: 3cced44c654548f3b3efe2634f708c75 3ed693eced6e476fb79e31930b47f402
+#: 8a253fb473ab48a1abb1214028a6f0e0 96394c3a81744876880c28d937ae5b9f
+#: cb0ff4cc4bc54a88a1655096960b1b74
 msgid "Returns"
 msgstr ""
 
-#: 62a5bacfd4604430ae862f51adf973fb of pybroker.model.ModelLoader.__call__:7
+#: f0a235d589714b40a44fcaee282e1fe3 of pybroker.model.ModelLoader.__call__:7
 msgid "Pre-trained model."
 msgstr ""
 
-#: 99d4a873ecb749388df60fd4047541a2 of pybroker.model.ModelSource:1
-#: pybroker.model.ModelsMixin:1
-msgid "Bases: :py:class:`object`"
-msgstr ""
-
-#: 6475021dc780440e86ff76fee1263ab1 of pybroker.model.ModelSource:1
+#: 61f3d7897ada436ab90545cb53c4ba2d of pybroker.model.ModelSource:1
 msgid ""
 "Base class of a model source. A model source provides a model instance "
 "either by training one or by loading a pre-trained model."
 msgstr ""
 
-#: 4d73126b7dac4a7f88cab36c73eba7bb of pybroker.model.ModelSource:16
+#: 11cff4ef6c6449ecb770011416ff07be of pybroker.model.ModelSource:18
+msgid ""
+"Number of lagged values to include for each column in ``lag_cols``, "
+"producing a ``(n_rows, len(lag_cols) * (lags + 1))`` feature matrix that "
+"is passed to ``train_fn`` as ``lag_train``/``lag_test`` and to "
+"``predict_fn`` in place of the input DataFrame, rather than added as "
+"columns."
+msgstr ""
+
+#: 074fc04e778547ae90e35df2d9af9bdf of pybroker.model.ModelSource:23
+msgid ""
+"Columns to compute lagged values for. Defaults to the data columns of the"
+" training data, excluding ``date`` and ``symbol``; indicators are lagged "
+"only when named here."
+msgstr ""
+
+#: dfbe893815784912826a50dffc920a3d of pybroker.model.ModelSource:26
+msgid ""
+"If ``True``, ``predict_fn`` is called once per bar with input truncated "
+"to rows up to and including the current bar."
+msgstr ""
+
+#: b9d26f9e396b41ada2b97550714aabef of pybroker.model.ModelSource:30
 msgid "``dict`` of additional kwargs."
 msgstr ""
 
-#: 7123c2d1e1864e85993f2643bf45cd73 of
+#: e4c1c236777a4bac81bec203a0275e9e of pybroker.model.ModelSource.intervals:1
+msgid ""
+"Binds this model to one or more compression intervals for use with "
+":meth:`pybroker.strategy.Strategy.add_execution`."
+msgstr ""
+
+#: e6eda6b885db475983a9fdeaf2968c0c of pybroker.model.ModelSource.intervals:4
+msgid ""
+"A bound model is trained on exactly the listed intervals' compressed "
+"bars, together with any indicators registered on it. Binding replaces the"
+" default base-timeframe training; include the literal ``'base'`` in "
+"``intervals`` to also train the model on the base timeframe. Per-interval"
+" predictions are read with "
+":meth:`pybroker.context.IntervalContext.preds`. Bound intervals are "
+"automatically made available through "
+":meth:`pybroker.context.ExecContext.interval` without also declaring them"
+" in the ``intervals`` parameter of "
+":meth:`~pybroker.strategy.Strategy.add_execution`::"
+msgstr ""
+
+#: c0f968b81cfc4d3780d9ed5b45a35b48 of pybroker.model.ModelSource.intervals:20
+msgid ""
+"Only trainable models support interval binding. Calling this on a "
+"pretrained model (a :class:`.ModelLoader`) raises ``ValueError``."
+msgstr ""
+
+#: c7df75b235f14645bcc0fb8d30a05745 of pybroker.model.ModelSource.intervals:23
+msgid ""
+"One or more :class:`~pybroker.interval.TimeframeInterval`\\ s to train "
+"this model on, each strictly coarser than the base bar spacing of the "
+"backtest data, or the literal ``'base'`` for the base timeframe."
+msgstr ""
+
+#: a001c0994946430b8204f869b55cf69d of pybroker.model.ModelSource.intervals:29
+msgid ":class:`.IntervalBoundModel` binding this model to ``intervals``."
+msgstr ""
+
+#: 988274e88d4641c784ff786c68f4472c of
 #: pybroker.model.ModelSource.prepare_input_data:1
 msgid ""
 "Prepares a :class:`pandas.DataFrame` of input data for passing to a model"
@@ -181,175 +324,380 @@ msgid ""
 " are used as input features."
 msgstr ""
 
-#: afebdc71e82b4142a57e1c8a5deb1aa7 of pybroker.model.ModelTrainer:1
+#: 229cab28e3014ab1a0b52357ebccc5b5 of pybroker.model.ModelTrainer:1
 msgid "Trains a model."
 msgstr ""
 
-#: 3a777154afe047f68bdcd0b7837288a4 of pybroker.model.ModelTrainer:4
+#: 6c721c7393254884b40f588009cbd24a of pybroker.model.ModelTrainer:4
 msgid ""
-"``Callable[[symbol: str, train_data: DataFrame, test_data: DataFrame, "
-"...], DataFrame]`` used to train and return a model. This is expected to "
-"return either a trained model instance, or a tuple containing a trained "
-"model instance and a :class:`Iterable` of column names to to be used as "
-"input for the model when making predictions."
+"When ``pooled`` is ``False``, ``Callable[[symbol: str, train_data: "
+"DataFrame, test_data: DataFrame, ...], DataFrame]``. When ``pooled`` is "
+"``True``, ``Callable[[symbols: Sequence[str], train_data: DataFrame, "
+"test_data: DataFrame, ...], DataFrame]``. When ``lags`` is set, "
+"``train_fn`` is additionally called with ``lag_train=`` and ``lag_test=``"
+" keyword arguments holding the lag feature matrices aligned one row per "
+"``train_data``/``test_data`` row, and must accept both. This is expected "
+"to return either a trained model instance, or a tuple containing a "
+"trained model instance and a :class:`Iterable` of column names to to be "
+"used as input for the model when making predictions."
 msgstr ""
 
-#: ee7574df31bf4d59818aa1aa4cc1d350 of pybroker.model.ModelTrainer:21
+#: 2cee24ad01194c9483c1db3929515ce9 of pybroker.model.ModelTrainer:31
 msgid "``dict`` of kwargs to pass to ``train_fn``."
 msgstr ""
 
-#: 29006882b99d4f66b78162fe2f9e05a5 of pybroker.model.ModelTrainer.__call__:1
-msgid "Trains model."
+#: e440708348a14388a0535d14bf61157c of pybroker.model.ModelTrainer.__call__:1
+msgid "Trains model per symbol."
 msgstr ""
 
-#: 2fa6b0a3b3ac4c8c8914e25f67dc8816 of pybroker.model.ModelTrainer.__call__:3
+#: 6fa0e337df354cb98585636b1c63c534 of pybroker.model.ModelTrainer.__call__:3
 msgid "Ticker symbol of model (models are trained per symbol)."
 msgstr ""
 
-#: 1ae4435bba4f4a44be468ae59bab349a of pybroker.model.ModelTrainer.__call__:4
+#: cad443f104d448d7a518c80bea32b15a of pybroker.model.ModelTrainer.__call__:4
 msgid "Train data."
 msgstr ""
 
-#: 0cbdd1a5b87d4f219cccc7313acf181d of pybroker.model.ModelTrainer.__call__:5
+#: 7031b73f4f154901b0478ca4c4fc0a37 of pybroker.model.ModelTrainer.__call__:5
 msgid "Test data."
 msgstr ""
 
-#: 7c29e8bfdaef4360b720b35b7297cc1f of pybroker.model.ModelTrainer.__call__:7
+#: 8d97d01b8776456ba1d0852dfcbf1daa 9d044fff241c4eb182469a6bbefceeb5 of
+#: pybroker.model.ModelTrainer.__call__:6
+#: pybroker.model.ModelTrainer.train_pooled:10
+msgid ""
+"Lag feature matrix aligned one row per ``train_data`` row. Passed to "
+"``train_fn`` as ``lag_train=`` when the model is registered with "
+"``lags``."
+msgstr ""
+
+#: 86638d5b05794087ae88663f3f77c776 f52ea992c01e46c4a0d09e01659f615d of
+#: pybroker.model.ModelTrainer.__call__:9
+#: pybroker.model.ModelTrainer.train_pooled:13
+msgid ""
+"Lag feature matrix aligned one row per ``test_data`` row. Passed to "
+"``train_fn`` as ``lag_test=`` when the model is registered with ``lags``."
+msgstr ""
+
+#: 7656ab680cf544f2aa6075862bc1cd2e cfdf2d8012fb4be58bcdc934ee36069b of
+#: pybroker.model.ModelTrainer.__call__:13
+#: pybroker.model.ModelTrainer.train_pooled:17
 msgid "Trained model."
 msgstr ""
 
-#: 096c542096044ccabc74b97438fa9a11 of pybroker.model.ModelsMixin:1
+#: 7a00d8d4a30f44039578571b5eeaf50a of
+#: pybroker.model.ModelTrainer.train_pooled:1
+msgid "Trains model using combined multi-symbol data."
+msgstr ""
+
+#: 44d1c3b3d30b4f7b89300e3fa5c6fff8 of
+#: pybroker.model.ModelTrainer.train_pooled:3
+msgid ""
+"Ticker symbols of the pooled group, sorted in ascending order to match "
+"the order that symbol blocks appear in ``train_data`` and ``test_data``. "
+"A listed symbol can have no rows in a frame, such as when ``lags`` drops "
+"all of its rows with the lag warmup."
+msgstr ""
+
+#: 667a594b3e954a58850c61bdedf112d9 of
+#: pybroker.model.ModelTrainer.train_pooled:8
+msgid "Train data containing a ``symbol`` column."
+msgstr ""
+
+#: 7d3f94beafb34cc98b8cbc5a1e1ee1ba of
+#: pybroker.model.ModelTrainer.train_pooled:9
+msgid "Test data containing a ``symbol`` column."
+msgstr ""
+
+#: 995f56b7d0bf4402988d6c5e65c9e8eb of pybroker.model.ModelsMixin:1
 msgid "Mixin implementing model related functionality."
 msgstr ""
 
-#: 0af03f1df69d41beb7ea0a35771f255b of
+#: dea7057bbe394cff944a66ba395c9bf1 of
 #: pybroker.model.ModelsMixin.train_models:1
 msgid "Trains models for the provided :class:`pybroker.common.ModelSymbol` pairs."
 msgstr ""
 
-#: 908fca967c7f4ee48a3fafc9d46c9e35 of
+#: 2f994fd2c22a45a3bc0ddf5e2a36655e of
 #: pybroker.model.ModelsMixin.train_models:4
 msgid ""
 "``Iterable`` of :class:`pybroker.common.ModelSymbol` pairs of models to "
 "train."
 msgstr ""
 
-#: 2d9b1437a67c4a2b9e9ff6d074e256c8 of
+#: addca3df7fea4224a7703991f8fb603e of
 #: pybroker.model.ModelsMixin.train_models:6
 msgid ":class:`pandas.DataFrame` of training data."
 msgstr ""
 
-#: c8b1ac72e21444ffb5f575d2d33382a7 of
+#: 085c6d56070c49c7a747b9518de2ee9b of
 #: pybroker.model.ModelsMixin.train_models:7
 msgid ":class:`pandas.DataFrame` of test data."
 msgstr ""
 
-#: 6f4e9b1a728d428a8f58a6bb31e3ee0d of
+#: cc9f4fdb222c4b1db67f5e3a73ac04e2 of
 #: pybroker.model.ModelsMixin.train_models:8
 msgid ""
 "``Mapping`` of :class:`pybroker.common.IndicatorSymbol` pairs to "
 "``pandas.Series`` of :class:`pybroker.indicator.Indicator` values."
 msgstr ""
 
-#: 89e6ea9924ac4d2ab5ea3b53bedef911 of
+#: 988c471974454c468de01daae59ed4d6 of
 #: pybroker.model.ModelsMixin.train_models:12
 msgid "Date fields used to key cache data."
 msgstr ""
 
-#: 8976848bbaf34a94b61cac318a0b5702 of
-#: pybroker.model.ModelsMixin.train_models:14
+#: 54cb89c9225046fd8ce2542da3e568cc of
+#: pybroker.model.ModelsMixin.train_models:13
+msgid ""
+"If ``True``, :class:`.ModelTrainer` models are trained in parallel using "
+"multiple processes. Defaults to ``False``."
+msgstr ""
+
+#: ce29a926401b49e49bf74fab9fa82a92 of
+#: pybroker.model.ModelsMixin.train_models:16
+msgid ""
+"``Mapping`` of ``(model_name, execution_id)`` pairs to ``frozenset[str]``"
+" of symbols for pooled training. Defaults to ``None``."
+msgstr ""
+
+#: c93d6fb30cbb400ab80908fcf1c6f075 of
+#: pybroker.model.ModelsMixin.train_models:19
+msgid ""
+"Number of bars in the future of the target prediction, expressed in the "
+"bars of the timeframe each model is fitted on: a model bound to an "
+"interval holds out ``lookahead`` compressed bars between its train and "
+"test rows. Defaults to ``1``."
+msgstr ""
+
+#: e8585aa6b00f4bd083a07e9dfcf918ba of
+#: pybroker.model.ModelsMixin.train_models:25
 msgid ""
 "``dict`` mapping each :class:`pybroker.common.ModelSymbol` pair to a "
 ":class:`pybroker.common.TrainedModel`."
 msgstr ""
 
-#: 77f55418cf27460383fca88fb1f46049 of pybroker.model.model:1
+#: 99333273bb2447aeada09c6dab83e78b of
+#: pybroker.model.apply_lags_to_model_input:1
+msgid "Attaches lag feature metadata to ``model_input``."
+msgstr ""
+
+#: 798a18daa9e34628a0535089dc479fb8 of
+#: pybroker.model.apply_lags_to_model_input_pooled:1
+msgid "Attaches lag feature metadata to pooled ``model_input``."
+msgstr ""
+
+#: 7a2a1deb97a14c2d8a57568dcfaefaa4 of
+#: pybroker.model.apply_prepare_input_data:1
+msgid "Applies a DataFrame-only prepare function to ``model_input``."
+msgstr ""
+
+#: 22f0bcad45354b34a04fa5057ebe08e3 of
+#: pybroker.model.build_lag_feature_matrix:1
+msgid "Builds a lag-expanded feature matrix from numpy arrays."
+msgstr ""
+
+#: 1442ef63bd9b4a84bd5651b8973c68a2 of
+#: pybroker.model.build_lag_feature_matrix:3
+msgid ""
+"Returns a matrix of shape ``(len(row_dates), len(columns) * (lags + "
+"1))``, laid out as one contiguous block per column, each block holding "
+"the column's current value followed by lags 1 through ``lags``."
+msgstr ""
+
+#: 818ce51353a5418ead85dee87094dd81 of
+#: pybroker.model.build_lag_feature_matrix_pooled:1
+msgid "Builds a lag-expanded feature matrix for pooled multi-symbol data."
+msgstr ""
+
+#: b7451ac678584e34b6e2b8b1dfdcd4ef of pybroker.model.cached_stacked_lags:1
+msgid "Returns a cached stacked array deep enough for ``lags``, else ``None``."
+msgstr ""
+
+#: 747141419bee41169317a7314f910835 of
+#: pybroker.model.compute_lag_series_cache:1
+msgid "Computes full-history lag arrays for daily/base bars."
+msgstr ""
+
+#: c66b1f6fcfcb47f5ab289e3d27617672 of pybroker.model.history_date_offset:1
+msgid "Returns the start index of ``row_dates`` inside ``history_dates``."
+msgstr ""
+
+#: 347a4d964a744e818a2892e1b591a7a7 of
+#: pybroker.model.merge_interval_lag_series_cache:1
+msgid "Adds full-history interval lag arrays into ``cache``."
+msgstr ""
+
+#: 81d25a0fa5ee472787d2f7cd1ab6d442 of
+#: pybroker.model.merge_interval_lag_series_cache:3
+msgid ""
+":class:`pybroker.interval.CompressedBars` holds data columns only, so "
+"``arrays_by_symbol`` supplies columns the bars cannot -- indicator values"
+" in particular -- and is consulted first when given."
+msgstr ""
+
+#: 8bb3e5f80336415ea430ba3051c6a0fa of pybroker.model.merge_lag_series_cache:1
+msgid "Adds full-history lag arrays for ``columns`` into ``cache``."
+msgstr ""
+
+#: 4f7b20fa35b24fd0818a193e6bfdae94 of
+#: pybroker.model.merge_lag_series_cache_from_arrays:1
+msgid "Adds full-history lag arrays built from numpy column data."
+msgstr ""
+
+#: b1b5da0f9a564ba1af38c453c835ee41 of
+#: pybroker.model.merge_lag_series_cache_from_store:1
+msgid ""
+"Adds full-history lag arrays from a "
+":class:`pybroker.scope.SymbolArrayStore`."
+msgstr ""
+
+#: 084b48ba976a475684642c1bd0660ec2 of
+#: pybroker.model.merge_lag_series_cache_from_store:3
+msgid ""
+"A :class:`pybroker.scope.SymbolArrayStore` holds data columns only, so "
+"indicator values are aligned onto the store's dates from "
+"``indicator_data``, which covers each symbol's full history. Lagging an "
+"indicator would otherwise fail even though it is a column of the model "
+"input."
+msgstr ""
+
+#: f9bbf2833ec140a8afeb0da8a06ac60d of pybroker.model.model:1
 msgid ""
 "Creates a :class:`.ModelSource` instance and registers it globally with "
 "``name``."
 msgstr ""
 
-#: 657e3f4d7515438eac293f7a7ba33dc3 of pybroker.model.model:4
+#: d66b7ae6dbfb445385beada30795b19d of pybroker.model.model:4
 msgid "Name for referencing the model globally."
 msgstr ""
 
-#: 0ab5694a4d8b4f7fa20b5900b821d65c of pybroker.model.model:5
+#: 747a5d681bb74c7aa244b279869c1bb1 of pybroker.model.model:5
 msgid ""
 ":class:`Callable` used to either train or load a model instance. If for "
-"training, then ``fn`` has signature ``Callable[[symbol: str, train_data: "
-"DataFrame, test_data: DataFrame, ...], DataFrame]``. If for loading, then"
-" ``fn`` has signature ``Callable[[symbol: str, train_start_date: "
-"datetime, train_end_date: datetime, ...], DataFrame]``. This is expected "
-"to return either a trained model instance, or a tuple containing a "
-"trained model instance and a :class:`Iterable` of column names to to be "
-"used as input for the model when making predictions."
+"training with ``pooled=False``, then ``fn`` has signature "
+"``Callable[[symbol: str, train_data: DataFrame, test_data: DataFrame, "
+"...], DataFrame]``. If for training with ``pooled=True``, then ``fn`` has"
+" signature ``Callable[[symbols: Sequence[str], train_data: DataFrame, "
+"test_data: DataFrame, ...], DataFrame]`` where ``symbols`` contains the "
+"pooled symbols sorted in ascending order, and both frames contain a "
+"``symbol`` column with each symbol's rows grouped together in that order."
+" A listed symbol can have no rows in a frame, such as when ``lags`` drops"
+" all of its rows with the lag warmup. If for loading, then ``fn`` has "
+"signature ``Callable[[symbol: str, train_start_date: datetime, "
+"train_end_date: datetime, ...], DataFrame]``. When ``lags`` is set, a "
+"training ``fn`` is additionally called with ``lag_train=`` and "
+"``lag_test=`` keyword arguments holding the prebuilt lag feature "
+"matrices, and must accept both. This is expected to return either a "
+"trained model instance, or a tuple containing a trained model instance "
+"and a :class:`Iterable` of column names to to be used as input for the "
+"model when making predictions. When only a model instance is returned, "
+"columns from the training DataFrame are used for prediction. For pooled "
+"models, the ``symbol`` column is omitted from inferred prediction "
+"columns."
 msgstr ""
 
-#: fae54e4545d341ed8be5d4749a279516 of pybroker.model.model:14
+#: fdf273625eee4451aff87f6317bccd4a of pybroker.model.model:28
 msgid ""
 ":class:`Iterable` of :class:`pybroker.indicator.Indicator`\\ s used as "
 "features of the model."
 msgstr ""
 
-#: 93df5fbb390747a0990d715ca38b548c of pybroker.model.model:25
+#: eb52a9ea6b5c42b487cb291ce78558d6 of pybroker.model.model:31
+msgid ""
+"Number of lagged values to include for each column in ``lag_cols``. The "
+"lagged values are built into a feature matrix of shape ``(n_rows, "
+"len(lag_cols) * (lags + 1))``: one contiguous block per column in "
+"``lag_cols`` declaration order, each block holding the column's current "
+"value followed by lags ``1`` through ``lags``, where lag ``1`` is the "
+"value from the previous bar. The matrix is passed to a training ``fn`` as"
+" the ``lag_train`` and ``lag_test`` keyword arguments, aligned one row "
+"per ``train_data``/``test_data`` row, and to ``predict_fn`` (or the "
+"model's default ``predict``) in place of the input DataFrame. Because the"
+" current bar's value is the first feature of each block, the intended "
+"prediction target is the *next* bar — using the current bar's value as "
+"the target would leak it. Lag data is kept separate from model input "
+"rather than added as columns, so the input :class:`pandas.DataFrame` is "
+"never widened or copied. Lagged values are computed from each symbol's "
+"full history, so rows at the start of a test window use real values "
+"carried over from the preceding train window instead of ``NaN``. Rows "
+"whose lags are undefined are dropped from training data only."
+msgstr ""
+
+#: 18066a687be44a0ebe10ebf3edbd32f7 of pybroker.model.model:50
+msgid ""
+"Column names and/or :class:`pybroker.indicator.Indicator`\\ s to compute "
+"lagged values for. :class:`pybroker.indicator.Indicator`\\ s passed here "
+"are added to ``indicators``. Declaration order sets the order of the "
+"feature blocks. Defaults to the data columns of the training data, "
+"excluding ``date`` and ``symbol``; indicators are lagged only when named "
+"here."
+msgstr ""
+
+#: cd52f761f63d4d3081b531cd2d57c2b4 of pybroker.model.model:57
+msgid ""
+"If ``True``, ``predict_fn`` is called once per bar with input truncated "
+"to rows up to and including the current bar, and must return a scalar "
+"prediction for that bar. With ``lags``, the input is the lag feature "
+"matrix truncated the same way, with the current bar as its last row. Use "
+"for models that are refit or updated every bar, such as GARCH or state "
+"space models. Note this makes one model call per bar per symbol, which is"
+" far slower than a single vectorized ``predict_fn`` call over the whole "
+"test window. Requires ``predict_fn`` and is not supported with "
+"``pooled=True``."
+msgstr ""
+
+#: f3884c604bd74493b1398d68a84e932f of pybroker.model.model:67
+msgid ""
+"``Callable[[DataFrame], DataFrame]`` for preprocessing input data passed "
+"to the model when making predictions. If set, ``input_data_fn`` will be "
+"called with a :class:`pandas.DataFrame` containing all test data, "
+"including when ``per_bar=True``. It must return one row per bar; adding "
+"or dropping rows would misalign predictions with bars and raises a "
+":class:`ValueError`. For models registered with ``lags``, it shapes "
+":meth:`pybroker.context.ExecContext.input` only, since predictions are "
+"made from the lag feature matrix."
+msgstr ""
+
+#: fdfcb292221f443e8020dd23963fb07b of pybroker.model.model:76
+msgid ""
+"``Callable[[Model, DataFrame], ndarray]`` that overrides calling the "
+"model's default ``predict`` function. If set, ``predict_fn`` will be "
+"called with the trained model and a :class:`pandas.DataFrame` containing "
+"all test data. When ``lags`` is set, it is instead called with the lag "
+"feature matrix (:class:`numpy.ndarray`) in place of the DataFrame. When "
+"``per_bar=True``, ``predict_fn`` receives input rows up to and including "
+"the current bar and must return a scalar prediction."
+msgstr ""
+
+#: 3fae483e26f94138ab3c878cbcac3421 of pybroker.model.model:84
 msgid ""
 "If ``True``, then ``fn`` is used to load and return a pre-trained model. "
 "If ``False``, ``fn`` is used to train and return a new model. Defaults to"
 " ``False``."
 msgstr ""
 
-#: f764484ac2e54299b32420998ce9b1ea of pybroker.model.model:28
+#: dd6e10e2900346b58c2c3a895f113237 of pybroker.model.model:89
 msgid "Additional arguments to pass to ``fn``."
 msgstr ""
 
-#: 6083cd7ab1294699bb099bcd46b624d0 of pybroker.model.model:30
+#: 641548d28e4042869a442856c5044cdf of pybroker.model.model:91
 msgid ":class:`.ModelSource` instance."
 msgstr ""
 
-#~ msgid ""
-#~ "``Callable[[symbol: str, ...], DataFrame]`` "
-#~ "used to load and return a pre-"
-#~ "trained model. This is expected to "
-#~ "return either a trained model instance,"
-#~ " or a tuple containing a trained "
-#~ "model instance and a :class:`Collection` "
-#~ "of column names to to be used "
-#~ "as input for the model when making"
-#~ " predictions."
-#~ msgstr ""
+#: 6e1ef4daeded4a49a4ee8fdf4ff2104e of pybroker.model.model_input_from_arrays:1
+msgid "Builds a :class:`ModelInput` from column arrays."
+msgstr ""
 
-#~ msgid ""
-#~ "``Callable[[symbol: str, train_data: DataFrame, "
-#~ "test_data: DataFrame, ...], DataFrame]`` used"
-#~ " to train and return a model. "
-#~ "This is expected to return either "
-#~ "a trained model instance, or a "
-#~ "tuple containing a trained model "
-#~ "instance and a :class:`Collection` of "
-#~ "column names to to be used as "
-#~ "input for the model when making "
-#~ "predictions."
-#~ msgstr ""
+#: f4ec235ad2ae41e0b1f25766d944a148 of pybroker.model.model_input_from_frame:1
+msgid "Builds a :class:`ModelInput` from a DataFrame without copying columns."
+msgstr ""
 
-#~ msgid ""
-#~ "``Collection`` of :class:`pybroker.common.ModelSymbol` "
-#~ "pairs of models to train."
-#~ msgstr ""
+#: ddaf0c06e81e4c3fbdefdec9c9581a3b of pybroker.model.shift_array:1
+msgid "Returns ``values`` shifted forward by ``lag`` bars with NaN warmup."
+msgstr ""
 
-#~ msgid ""
-#~ ":class:`Callable` used to either train "
-#~ "or load a model instance. If for"
-#~ " training, then ``fn`` has signature "
-#~ "``Callable[[symbol: str, train_data: DataFrame, "
-#~ "test_data: DataFrame, ...], DataFrame]``. If"
-#~ " for loading, then ``fn`` has "
-#~ "signature ``Callable[[symbol: str, ...], "
-#~ "DataFrame]``. This is expected to return"
-#~ " either a trained model instance, or"
-#~ " a tuple containing a trained model"
-#~ " instance and a :class:`Collection` of "
-#~ "column names to to be used as "
-#~ "input for the model when making "
-#~ "predictions."
-#~ msgstr ""
+#: 85bfbdeaf87546b48722ac14f7caa6e5 of pybroker.model.symbol_history_arrays:1
+msgid "Extracts sorted full-history date and column arrays for one symbol."
+msgstr ""
 

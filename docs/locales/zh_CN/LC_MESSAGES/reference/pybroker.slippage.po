@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2023, Edward West
+# Copyright (C) 2026, Edward West
 # This file is distributed under the same license as the PyBroker package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PyBroker \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-27 18:02+0800\n"
+"POT-Creation-Date: 2026-08-06 20:16-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -17,93 +17,284 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../source/reference/pybroker.slippage.rst:2
-#: 348d4a1aa2554ad7bf2eee5dbbec654f
+#: 4c4f6ce6a2534065900a6a55574caa2c
 msgid "pybroker.slippage module"
 msgstr ""
 
-#: 9ec281cdafe84e168bf3fe90c0fa8bd9 of pybroker.slippage:1
+#: b568430c578d42839040ebc125deff41 of pybroker.slippage:1
 msgid "Implements slippage models."
 msgstr ""
 
-#: aeb52ac88eb2475ab20fbeb1c4fa5864 of pybroker.slippage.RandomSlippageModel:1
-msgid "Bases: :py:class:`~pybroker.slippage.SlippageModel`"
+#: 48659a6bca54454aa65e872d282061d3 of pybroker.slippage.FixedSlippageModel:1
+msgid "Deterministic fixed-basis-point slippage on fill price."
 msgstr ""
 
-#: 67996096585040ea95dd505974ea541b of pybroker.slippage.RandomSlippageModel:1
-msgid "Implements a simple random slippage model."
+#: 74f68a07a77d46a890c84bc0bfb34521 of pybroker.slippage.FixedSlippageModel:3
+msgid ""
+"Buy fills are worsened upward; sell fills are worsened downward. Applies "
+"to long entries, short entries, long exits, and covers."
 msgstr ""
 
-#: ff1db22d090d4e248d8a21222d74b260 of pybroker.slippage.RandomSlippageModel
+#: ../../source/reference/pybroker.slippage.rst
+#: 0cb77d85b8b34dacb91a9bf4f890688a 4261f3ad3f624c339eb2097a5d53b522
+#: d8076cb564f1453580b2088597223465
 msgid "Parameters"
 msgstr ""
 
-#: 0c299d95981c4cbead3d8d9a6089f7d9 of pybroker.slippage.RandomSlippageModel:3
-msgid "Min percentage of slippage."
+#: 2335a0f7db384ac0a8aa65ffed762e5c of pybroker.slippage.FixedSlippageModel:6
+msgid ""
+"Adverse slippage in basis points. ``0`` is a no-op. Must be less than "
+"``10000`` (100%), which would make sell fills non-positive."
 msgstr ""
 
-#: d00d2632630948c7ad8c281a35f0a810 of pybroker.slippage.RandomSlippageModel:4
-msgid "Max percentage of slippage."
+#: 6fefa82948b0402da94ff54f59691f8b of
+#: pybroker.slippage.FixedSlippageModel.adjust_fill_price:1
+msgid "Returns ``fill_price`` adjusted for ``side`` without extra context."
 msgstr ""
 
-#: 6766901030314430963a9b3316f4d6e8 be2b557992a445a4aa4672a8f91ccb93 of
-#: pybroker.slippage.RandomSlippageModel.apply_slippage:1
+#: ac56b56b50f9443da6a88ad7303bfd1f c9656b74eeeb47e28eee85849823f7e9
+#: dfb9bc03f79145c180b42690c5c04ddb f08cab572fa241768aa7736da63e5314 of
+#: pybroker.slippage.FixedSlippageModel.apply_slippage:1
 #: pybroker.slippage.SlippageModel.apply_slippage:1
-msgid "Applies slippage to ``ctx``."
+#: pybroker.slippage.VolatilitySlippageModel.apply_slippage:1
+#: pybroker.slippage.VolumeSlippageModel.apply_slippage:1
+msgid "Applies slippage using data from the fill bar."
 msgstr ""
 
-#: c820922bdfc044a7bcfda2757855f9e1 of pybroker.slippage.SlippageModel:1
-msgid "Bases: :py:class:`~abc.ABC`"
+#: 2f7ade290b064eb19150682b30b39bf3 6211c7ad26c64222bbc67522be70ad74
+#: 80d79bec284d488da66501fbac52928b ca4f9cce4b344fc7b519319014f8b97d of
+#: pybroker.slippage.FixedSlippageModel.apply_slippage:3
+#: pybroker.slippage.SlippageModel.apply_slippage:3
+#: pybroker.slippage.VolatilitySlippageModel.apply_slippage:3
+#: pybroker.slippage.VolumeSlippageModel.apply_slippage:3
+msgid ""
+"The returned share quantity may be reduced to simulate a partial fill, "
+"but never increased: returning more than ``ctx.shares`` (or a negative "
+"quantity) raises a :class:`ValueError` at the fill."
 msgstr ""
 
-#: 3aa9a29053134d5e9a42bcce23fbaab1 of pybroker.slippage.SlippageModel:1
+#: ../../source/reference/pybroker.slippage.rst
+#: 0a38fba020394d5a82a528347f8e0ea7 37c5ea1c83654259bd51c2c0d9336cc2
+#: 41625981c578469ba83069686d286466 986c487b2a074b00827d8bc240d782be
+#: d7bd472a7ba746619776335a7a7e8bb4
+msgid "Returns"
+msgstr ""
+
+#: 0d33aa6976ce4315b3035a6c83086275 40f198db914e4f26b80075174b996ec7
+#: 657e17bef7194c2dac2bdd0c3444ac3d 71c32638010d4b3d9a3d4ae9c8c6df20
+#: f092f6fde1a34784a3698711e53c5529 of
+#: pybroker.slippage.FixedSlippageModel.apply_slippage:7
+#: pybroker.slippage.SlippageModel.adjust_fill:8
+#: pybroker.slippage.SlippageModel.apply_slippage:7
+#: pybroker.slippage.VolatilitySlippageModel.apply_slippage:7
+#: pybroker.slippage.VolumeSlippageModel.apply_slippage:7
+msgid "Tuple of ``(shares, fill_price)`` after slippage."
+msgstr ""
+
+#: 164e65335803435098b918000cdec6e2 a26b3835afc54d4bbe434306ec1917f1
+#: ca3f84a7342f40908d1e06c29dd72fdd dceabd73adf540cea0039e75f3822911 of
+#: pybroker.slippage.FixedSlippageModel.is_fill_noop:1
+#: pybroker.slippage.SlippageModel.is_fill_noop:1
+#: pybroker.slippage.VolatilitySlippageModel.is_fill_noop:1
+#: pybroker.slippage.VolumeSlippageModel.is_fill_noop:1
+msgid "Whether :meth:`apply_slippage` is a no-op for this model."
+msgstr ""
+
+#: 6ea53e5838814116be23133291f1b141 of pybroker.slippage.SlippageContext:1
+msgid "Context passed to slippage adjustments."
+msgstr ""
+
+#: 4354a0f322d04d9fb10052371378146c of pybroker.slippage.SlippageContext:5
+msgid "Order side, either ``buy`` or ``sell``."
+msgstr ""
+
+#: 35e1214208e346f1b42d710ab9612e14 94ad5db06c454443ab34aaa5a4f2a387
+#: 9872b15e81b64c4f8d453ca96a80fa67 a67c2c56ba1944c285a7639b03e53be8
+#: a7004da85a664cd0be4776873c3ffefa cb3d54c38b73496589884a24624fd587
+#: f3713a5482d14f849ed59d435404ac63 fbc37b604c7f4c1eb30022bfc1c0bf69 of
+#: pybroker.slippage.SlippageContext
+msgid "type"
+msgstr ""
+
+#: cf62b03761b240fa90c6a3d5f40ab39d of pybroker.slippage.SlippageContext:7
+msgid "Literal['buy', 'sell']"
+msgstr ""
+
+#: 6c507ce6ed724c3fa4a5730eb93615a5 of pybroker.slippage.SlippageContext:11
+msgid "Ticker symbol of the order."
+msgstr ""
+
+#: 539c10c4dbd84dd0a823d9f73da33628 of pybroker.slippage.SlippageContext:13
+msgid "str"
+msgstr ""
+
+#: 7bf964156b424e649f6146f28dd9db03 of pybroker.slippage.SlippageContext:17
+msgid "Number of shares to fill before slippage."
+msgstr ""
+
+#: 6a9d64ed1f274a5dadef41971688cd37 886eb3b20b994caabd6002baaf9a5bbf of
+#: pybroker.slippage.SlippageContext:19 pybroker.slippage.SlippageContext:25
+msgid "decimal.Decimal"
+msgstr ""
+
+#: 1cacb621aee746858f90cd3b2d935681 of pybroker.slippage.SlippageContext:23
+msgid "Base fill price resolved on the fill bar."
+msgstr ""
+
+#: 1db9afa404d04626981991ee243aa809 of pybroker.slippage.SlippageContext:29
+msgid ""
+"Column scope over the whole test window — **not** pre-sliced to the fill "
+"bar. Causal reads must bound every fetch with the fill bar's index, e.g. "
+"``ctx.col_scope.fetch(ctx.symbol, \"close\", "
+"end_index=ctx.sym_end_index[ctx.symbol])``; fetching without "
+"``end_index`` returns the full window, including bars after the fill. "
+"``None`` when bar data is unavailable, in which case volume- and "
+"volatility-based models leave the fill unadjusted."
+msgstr ""
+
+#: 767270bf5a7648eda14fce64a9231828 of pybroker.slippage.SlippageContext:38
+msgid "pybroker.scope.ColumnScope | None"
+msgstr ""
+
+#: a7a8a3754faa45a69059da648e6fe43c of pybroker.slippage.SlippageContext:42
+msgid ""
+"Indicator scope over the whole test window — the same ``end_index`` bound"
+" applies as for ``col_scope``. ``None`` when indicator data is "
+"unavailable, in which case indicator-based models leave the fill "
+"unadjusted."
+msgstr ""
+
+#: 5e2732b3b62f43e2a3117495bc9717c0 of pybroker.slippage.SlippageContext:47
+msgid "pybroker.scope.IndicatorScope | None"
+msgstr ""
+
+#: 221ee2fe471341b58d176b241675f120 of pybroker.slippage.SlippageContext:51
+msgid "Current bar index per symbol, or ``None`` when unavailable."
+msgstr ""
+
+#: b0be0c10ec9b4e6a8033c0acfb8a486c of pybroker.slippage.SlippageContext:54
+msgid "Mapping[str, int] | None"
+msgstr ""
+
+#: 91e12bd509d8491bb205c09dd005fb8c of pybroker.slippage.SlippageContext:58
+msgid ""
+"Whether fractional shares are enabled. When ``False``, a returned share "
+"quantity is truncated to a whole number by the caller; the flag lets a "
+"model compute price-dependent values (such as volume participation) from "
+"the quantity that will actually fill."
+msgstr ""
+
+#: 8da2fcb433704f24b4bb9f8dd7513f1a of pybroker.slippage.SlippageContext:64
+msgid "bool"
+msgstr ""
+
+#: 90b96bbbe4574d0883fce1b1a41ea082 of pybroker.slippage.SlippageModel:1
 msgid "Base class for implementing a slippage model."
 msgstr ""
 
-#~ msgid "Implements slippage models."
+#: a60855520c4a42de8de0c9e03d558373 of pybroker.slippage.SlippageModel:3
+msgid ""
+"A slippage model may adjust fill price, share quantity, or both, using "
+"data from the fill bar in :meth:`apply_slippage`."
+msgstr ""
+
+#: df04aa092ff04bc9afbb1f3417133dc9 of pybroker.slippage.SlippageModel:6
+msgid ""
+":meth:`apply_slippage` is called for scheduled buy and sell orders, for "
+"stop exits (stop loss, take profit, trailing, and bar stops), and for "
+":meth:`pybroker.portfolio.Portfolio.exit_position` fills. Stop and exit "
+"fills apply the returned **fill price only**; a returned share quantity "
+"is ignored, since those paths exit an entry in full."
+msgstr ""
+
+#: f6bfdaa477aa4427b9fa7558c7dd5529 of
+#: pybroker.slippage.SlippageModel.adjust_fill:1
+msgid ""
+"Builds a :class:`.SlippageContext` and applies :meth:`apply_slippage` to "
+"it."
+msgstr ""
+
+#: 8e8187d1329e450eb21e286a480fd07e of
+#: pybroker.slippage.SlippageModel.adjust_fill:4
+msgid ""
+"Provided so that callers which cannot import :mod:`pybroker.slippage` "
+"(such as :mod:`pybroker.portfolio`) can still apply slippage to a fill."
+msgstr ""
+
+#: 056d736a41d84ffc860ce588cb969cc3 605b10a3b59c41e78e968aa76e93d9ad of
+#: pybroker.slippage.SlippageModel.validate:1
+#: pybroker.slippage.VolumeSlippageModel.validate:1
+msgid "Validates model configuration before a backtest starts."
+msgstr ""
+
+#: ff5b8709c3f54af1b707611be5803037 of
+#: pybroker.slippage.VolatilitySlippageModel:1
+msgid "ATR-scaled slippage on fill price."
+msgstr ""
+
+#: 8ba99a706cdd44c689e6c2d8708fa568 of
+#: pybroker.slippage.VolatilitySlippageModel:3
+msgid ""
+"Adverse price adjustment equals ``scale * ATR`` at the fill bar, where "
+"the Average True Range is computed over the ``atr_period`` bars ending at"
+" the fill bar (see :func:`pybroker.vect.atr`). Fills during the warmup "
+"period -- the first ``atr_period`` bars, which have no full ATR window --"
+" or on bars where the ATR is ``NaN`` are left unadjusted."
+msgstr ""
+
+#: 45ed4893bde14f01bb531a9bfe2952b8 of
+#: pybroker.slippage.VolatilitySlippageModel:9
+msgid "Number of lookback bars for the ATR. Defaults to ``14``."
+msgstr ""
+
+#: 0a67d72ef83f4887ae7ec4f55ea1e77a of
+#: pybroker.slippage.VolatilitySlippageModel:10
+msgid "Multiplier applied to the ATR value."
+msgstr ""
+
+#: 3e9026e7b0b94c2b93c3f0d03b989545 of pybroker.slippage.VolumeSlippageModel:1
+msgid "Volume-based participation cap and square-law price impact."
+msgstr ""
+
+#: 34a2c876dfc149e2973a1decac5b461a of pybroker.slippage.VolumeSlippageModel:3
+msgid ""
+"Share quantity may be capped at ``volume_limit * bar_volume``. Price "
+"impact is ``price_impact * (filled_shares / bar_volume) ** 2``. Either "
+"effect can be disabled by passing ``0`` or ``None``."
+msgstr ""
+
+#: 891cce73e66a4f22b40a7f2eac33827f of pybroker.slippage.VolumeSlippageModel:7
+msgid ""
+"Requires a ``volume`` data column, which is optional in PyBroker. Bars "
+"where the volume is missing or ``NaN`` are left unadjusted."
+msgstr ""
+
+#: 507aeabc5d8442bba0e39ea55617b8f3 of pybroker.slippage.VolumeSlippageModel:10
+msgid "Square-law impact coefficient. ``0`` disables impact."
+msgstr ""
+
+#: 0d74eadd66d84ccaa81fff9a52f086f6 of pybroker.slippage.VolumeSlippageModel:11
+msgid ""
+"Max participation as a fraction of bar volume. ``None`` or ``0`` disables"
+" the cap."
+msgstr ""
+
+#~ msgid ""
+#~ "Column scope for bar data on the"
+#~ " fill bar. ``None`` when bar data "
+#~ "is unavailable, in which case volume-"
+#~ " and volatility-based models leave "
+#~ "the fill unadjusted."
 #~ msgstr ""
 
-#~ msgid "Bases: :py:class:`~pybroker.slippage.SlippageModel`"
-#~ msgstr ""
-
-#~ msgid "Implements a simple random slippage model."
-#~ msgstr ""
-
-#~ msgid "Parameters"
-#~ msgstr ""
-
-#~ msgid "Min percentage of slippage."
-#~ msgstr ""
-
-#~ msgid "Max percentage of slippage."
-#~ msgstr ""
-
-#~ msgid "Applies slippage to ``ctx``."
-#~ msgstr ""
-
-#~ msgid "Bases: :py:class:`~typing.NamedTuple`"
-#~ msgstr ""
-
-#~ msgid "Contains data to use for calculating slippage."
-#~ msgstr ""
-
-#~ msgid "Number of shares to buy."
-#~ msgstr ""
-
-#~ msgid "type"
-#~ msgstr ""
-
-#~ msgid "decimal.Decimal | None"
-#~ msgstr ""
-
-#~ msgid "Number of shares to sell."
-#~ msgstr ""
-
-#~ msgid "Bases: :py:class:`~abc.ABC`"
-#~ msgstr ""
-
-#~ msgid "Base class for implementing a slippage model."
+#~ msgid ""
+#~ "Indicator scope for indicator data on"
+#~ " the fill bar. ``None`` when "
+#~ "indicator data is unavailable, in which"
+#~ " case indicator-based models leave "
+#~ "the fill unadjusted."
 #~ msgstr ""
 
