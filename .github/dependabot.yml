@@ -12,12 +12,20 @@ version: 2
 # anything. Security updates ignore cooldown entirely, so this never
 # delays a fix for a known vulnerability.
 updates:
+  # Silenced on this fork: upstream owns the dependency ranges, and
+  # deliberately keeps them broad for a library (optuna>=3.1,<5,
+  # numba>=0.64.0,<1, ruff and pytest-cov unpinned). Dependabot here
+  # computes narrower floors against the fork's own branch and duplicates
+  # work upstream has already decided -- seven such PRs were opened and
+  # closed. A limit of 0 disables version updates for this ecosystem
+  # without removing the config. github-actions below stays on: it is what
+  # keeps this fork's SHA pins current.
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
     target-branch: "dev"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     cooldown:
       default-days: 7
 
